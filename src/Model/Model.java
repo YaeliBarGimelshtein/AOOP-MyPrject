@@ -38,4 +38,12 @@ public class Model {
 		
 	}
 
+	public String getAllProducts() {
+		return "abc down\n needs to be down\n is down?";
+	}
+
+	public String getAllPrfits() {
+		return "Profit 1 ....\nProfit 2 .... \nAll Profits ...";
+	}
+
 }

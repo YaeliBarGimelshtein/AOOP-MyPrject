@@ -25,6 +25,8 @@ public class View {
 	private addProdectView addProductView;
 	private showChosenProductView showProductView;
 	private searchProductView searchProductByCatalogNumberView;
+	private showAllProductsView showAllProductsView;
+	private showAllProfitsView showAllProfits;
 	
 	private Stage stage;
 	private boolean readFromFile;
@@ -71,6 +73,8 @@ public class View {
 		this.optionsView=new saveProductsOptionsView(new Stage());
 		this.searchProductByCatalogNumberView= new searchProductView(new Stage());
 		this.showProductView= new showChosenProductView(new Stage());
+		this.showAllProductsView=new showAllProductsView(new Stage());
+		this.showAllProfits=new showAllProfitsView(new Stage());
 		
 		//buttons
 		this.quit= new Button("Save and quit");
@@ -135,6 +139,7 @@ public class View {
 		
 		this.error= new Label("");
 		this.error.setFont(Font.font("Verdana", FontWeight.BOLD, 16));
+		this.error.setTextFill(Color.RED);
 		
 		//layout
 		this.firstRow=new HBox();
@@ -207,8 +212,6 @@ public class View {
 	}
 	
 	public void createShowProductView() {
-		
-		
 		this.showProductView.show();
 	}
 	
@@ -223,6 +226,19 @@ public class View {
 		this.showProductView.updateInfo("yoyo","30","20","koko","0503299910","true");
 		this.showProductView.show();
 	}
+	
+	public void createShowAllProductsView(String allProducts) {
+		this.stage.close();
+		this.showAllProductsView.updateToAllProducts(allProducts);
+		this.showAllProductsView.show();
+	}
+	
+	public void createShowAllProfitsView(String allPrfits) {
+		this.stage.close();
+		this.showAllProfits.updateToAllProducts(allPrfits);
+		this.showAllProfits.show();
+	}
+
 	
 	public boolean checkAddProductDone() { //to add product	
 		return this.addProductView.checkAddProductDone();
@@ -293,6 +309,26 @@ public class View {
 		this.stage.show();
 	}
 	
+	public void updateWindowToUndo() {
+		this.error.setText("Last Product deleted");
+	}
+	
+	public void updateWindowToReadAllFromFile() {
+		this.error.setText("Read All From File");
+	}
+	
+	public void updateWindowToDeleteProductFromFile() {
+		this.error.setText("Deleted from file");
+	}
+	
+	public void updateWindowToDeleteAllProductFromFile() {
+		this.error.setText("Deleted all from file");
+	}
+	
+	public void updateWindowToToSendSMS() {
+		this.error.setText("SMS sent");
+	}
+	
 	public void setAllOptionsDisables() {
 		this.getAndShowProduct.setDisable(true);
 		this.showAllProducts.setDisable(true);
@@ -320,6 +356,19 @@ public class View {
 	
 	public void closeShowProductWindow() {
 		this.showProductView.closeWindow();
+		this.error.setText("");
+		this.stage.show();
+	}
+	
+	public void closeShowAllProductsWindow() {
+		this.showAllProductsView.closeWindow();
+		this.error.setText("");
+		this.stage.show();
+	}
+	
+	public void closeShowAllProfitsWindow() {
+		this.showAllProfits.closeWindow();
+		this.error.setText("");
 		this.stage.show();
 	}
 	
@@ -353,6 +402,85 @@ public class View {
 	public void addEventHandlerTodoneInSearchProduct(EventHandler<ActionEvent> doneInSearchProductIsPressed) {
 		this.searchProductByCatalogNumberView.getDoneButton().setOnAction(doneInSearchProductIsPressed);
 	}
+
+
+	public void addEventHandlerToshowAllProducts(EventHandler<ActionEvent> showAllProductsIsPressed) {
+		this.showAllProducts.setOnAction(showAllProductsIsPressed);
+	}
+
+
+	public void addEventHandlerTodoneInShowAllProducts(EventHandler<ActionEvent> doneInShowAllProductsIsPressed) {
+		this.showAllProductsView.getDoneButton().setOnAction(doneInShowAllProductsIsPressed);
+	}
+
+
+	public void addEventHandlerToQuit(EventHandler<ActionEvent> quitIsPressed) {
+		this.quit.setOnAction(quitIsPressed);
+	}
+
+
+	public void addEventHandlerToshowAllProfits(EventHandler<ActionEvent> showAllProfitsIsPressed) {
+		this.showProfit.setOnAction(showAllProfitsIsPressed);
+	}
+
+
+	public void addEventHandlerTodoneInShowAllProfits(EventHandler<ActionEvent> doneInShowAllProfitsIsPressed) {
+		this.showAllProfits.getDoneButton().setOnAction(doneInShowAllProfitsIsPressed);
+	}
+
+
+	public void addEventHandlerToUndoLastAddedProduct(EventHandler<ActionEvent> undoLastAddedProductIsPressed) {
+		this.undoLastAddedProduct.setOnAction(undoLastAddedProductIsPressed);
+	}
+
+
+	public void addEventHandlerToReadAllFromFile(EventHandler<ActionEvent> readAllFromFileIsPressed) {
+		this.readAllFromFile.setOnAction(readAllFromFileIsPressed);
+	}
+
+
+	public void addEventHandlerToDeleteProductFromFile(EventHandler<ActionEvent> deleteProductFromFileIsPressed) {
+		this.deleteProductFromFile.setOnAction(deleteProductFromFileIsPressed);
+	}
+
+
+	public void addEventHandlerToDeleteAllProductFromFile(EventHandler<ActionEvent> deleteAllProductFromFileIsPressed) {
+		this.deleteAllFromFile.setOnAction(deleteAllProductFromFileIsPressed);
+	}
+
+
+	public void addEventHandlerToSendSMS(EventHandler<ActionEvent> sendSMSIsPressed) {
+		this.sendSMS.setOnAction(sendSMSIsPressed);
+	}
+
+
+	
+
+
+	
+
+
+
+
+
+	
+
+
+	
+
+
+	
+
+
+	
+
+	
+
+
+	
+
+
+	
 
 
 	
