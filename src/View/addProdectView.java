@@ -19,7 +19,6 @@ import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
 public class addProdectView {
-	boolean finished;
 	//button
 	private Button done;
 	private RadioButton intrestedInSalesYes;

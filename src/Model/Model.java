@@ -28,4 +28,14 @@ public class Model {
 		return this.readFromFile;
 	}
 
+	public void getChosenProdect() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public Product findProduct(String catalogNumberToFind) {
+		return null;
+		
+	}
+
 }

@@ -56,9 +56,41 @@ public class Controller {
 		};
 		view.addEventHandlerTodoneInAddProduct(doneInAddProductIsPressed);
 		
+		EventHandler<ActionEvent> showProductIsPressed= new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				view.createSearchProductView();
+			}
+		};
+		view.addEventHandlerToShowProduct(showProductIsPressed);
+		
+		
+		EventHandler<ActionEvent> doneInSearchProductIsPressed= new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				boolean finished=view.checkChoosingCatalogNumberDone();
+				
+				if(finished) {
+					model.findProduct(view.getCatalogNumberToFind());
+					//model.getChosenProdect();
+					view.createShowProductView( "pName", "pPriceForStore" , "pPriceForCustomer", "cName", "cPhoneNumber", "cIntrestedInSales");
+					
+				}
+			}
+		};
+		view.addEventHandlerTodoneInSearchProduct(doneInSearchProductIsPressed);
 		
 		
 		
+		
+		
+		EventHandler<ActionEvent> doneInShowProductIsPressed= new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				view.closeShowProductWindow();
+			}
+		};
+		view.addEventHandlerTodoneInShowProduct(doneInShowProductIsPressed);
 		
 	}
 }

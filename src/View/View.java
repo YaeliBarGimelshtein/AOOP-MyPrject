@@ -23,6 +23,8 @@ public class View {
 	//other views
 	private saveProductsOptionsView optionsView;
 	private addProdectView addProductView;
+	private showChosenProductView showProductView;
+	private searchProductView searchProductByCatalogNumberView;
 	
 	private Stage stage;
 	private boolean readFromFile;
@@ -38,6 +40,7 @@ public class View {
 	private Button showProfit;
 	private Button sendSMS;
 	private Button showAllConfirmedCustomers;
+	private Button quit;
 	
 	//texts
 	private Label headLine;
@@ -47,6 +50,7 @@ public class View {
 	//layout
 	private HBox firstRow;
 	private HBox secondRow;
+	private HBox quitBox;
 	private HBox headLineBox;
 	private HBox errorBox;
 	private VBox allOptions;
@@ -65,8 +69,13 @@ public class View {
 			noProducts=false;
 		this.addProductView=new addProdectView(new Stage());
 		this.optionsView=new saveProductsOptionsView(new Stage());
+		this.searchProductByCatalogNumberView= new searchProductView(new Stage());
+		this.showProductView= new showChosenProductView(new Stage());
 		
 		//buttons
+		this.quit= new Button("Save and quit");
+		this.quit.setFont(Font.font("Verdana", FontWeight.BOLD, 16));
+		
 		this.addProduct= new Button("Add product");
 		this.addProduct.setFont(Font.font("Verdana", FontWeight.BOLD, 16));
 		
@@ -138,6 +147,11 @@ public class View {
 		this.secondRow.setAlignment(Pos.CENTER);
 		this.secondRow.setSpacing(15);
 		
+		this.quitBox=new HBox();
+		this.quitBox.getChildren().addAll(quit);
+		this.quitBox.setAlignment(Pos.CENTER);
+		this.quitBox.setSpacing(15);
+		
 		this.headLineBox=new HBox();
 		this.headLineBox.getChildren().addAll(headLine);
 		this.headLineBox.setAlignment(Pos.CENTER);
@@ -148,9 +162,10 @@ public class View {
 		HBox.setMargin(error, new Insets(0,0, 30, 0));
 
 		this.allOptions= new VBox();
-		this.allOptions.getChildren().addAll(firstRow,secondRow);
+		this.allOptions.getChildren().addAll(firstRow,secondRow,quitBox);
 		VBox.setMargin(firstRow, new Insets(150,0, 30, 200));
 		VBox.setMargin(secondRow, new Insets(0,0, 0, 200));
+		VBox.setMargin(quitBox, new Insets(60,0, 0, 200));
 		this.allOptions.setAlignment(Pos.CENTER);
 		
 		this.centerScreen=new Pane();
@@ -191,12 +206,40 @@ public class View {
 		this.addProductView.show();
 	}
 	
-	public boolean checkAddProductDone() { //to add product
-		if(this.addProductView!=null) {
-			return this.addProductView.checkAddProductDone();
-		}
-		return true;
+	public void createShowProductView() {
+		
+		
+		this.showProductView.show();
 	}
+	
+	public void createSearchProductView() {
+		this.stage.close();
+		this.searchProductByCatalogNumberView.show();
+	}
+	
+	public void createShowProductView(String pName, String pPriceForStore, String pPriceForCustomer, String cName, String cPhoneNumber,
+			String cIntrestedInSales) {
+		this.searchProductByCatalogNumberView.closeWindow();
+		this.showProductView.updateInfo("yoyo","30","20","koko","0503299910","true");
+		this.showProductView.show();
+	}
+	
+	public boolean checkAddProductDone() { //to add product	
+		return this.addProductView.checkAddProductDone();
+	}
+	
+
+	
+	public boolean checkChoosingCatalogNumberDone() {
+		return this.searchProductByCatalogNumberView.checkChooseProductDone();
+	}
+	
+	public String getCatalogNumberToFind() {
+		return this.searchProductByCatalogNumberView.getCatalogNumber();
+	}
+	
+	
+
 	
 	public String getNewProductName() { //to add product
 		return this.addProductView.getName();
@@ -274,6 +317,12 @@ public class View {
 		this.showAllConfirmedCustomers.setDisable(false);
 	}
 	
+	
+	public void closeShowProductWindow() {
+		this.showProductView.closeWindow();
+		this.stage.show();
+	}
+	
 	//connection to controller
 
 	public void addChangeListenerToGames(ChangeListener<Toggle> savingMethodPicked) {
@@ -289,6 +338,37 @@ public class View {
 	public void addEventHandlerTodoneInAddProduct(EventHandler<ActionEvent> doneInAddProductIsPressed) {
 		this.addProductView.getDoneButton().setOnAction(doneInAddProductIsPressed);
 	}
+
+
+	public void addEventHandlerToShowProduct(EventHandler<ActionEvent> showProductIsPressed) {
+		this.getAndShowProduct.setOnAction(showProductIsPressed);
+	}
+
+
+	public void addEventHandlerTodoneInShowProduct(EventHandler<ActionEvent> showProductIsPressed) {
+		this.showProductView.getDoneButton().setOnAction(showProductIsPressed);
+	}
+
+
+	public void addEventHandlerTodoneInSearchProduct(EventHandler<ActionEvent> doneInSearchProductIsPressed) {
+		this.searchProductByCatalogNumberView.getDoneButton().setOnAction(doneInSearchProductIsPressed);
+	}
+
+
+	
+
+
+
+
+	
+
+
+	
+
+
+	
+
+
 
 
 	
