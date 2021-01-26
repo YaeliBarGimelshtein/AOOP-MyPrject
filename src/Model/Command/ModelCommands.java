@@ -7,7 +7,7 @@ public interface ModelCommands {
 	void addProductByFields(String catalogNumber, String name, int priceForStore, int priceForCustomer,
 			String Cname, String CphoneNumber, boolean intrestedInSales);
 	void updateSavingMethod(int orderToSaveProducts);
-	void findProduct(String catalogNumberToFind);
+	boolean findProduct(String catalogNumberToFind);
 	String getAllProducts();
 	String getAllPrfits();
 	

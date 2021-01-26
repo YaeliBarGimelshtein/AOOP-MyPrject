@@ -9,6 +9,7 @@ public class AllModelCommands implements ModelCommands{
 	private findProductCommand findProduct;
 	private getAllProductsCommand getAllProducts;
 	private gelAllProfitsCommand gelAllProfits;
+	private Product found;
 	
 
 	public AllModelCommands(Model model) {
@@ -36,8 +37,11 @@ public class AllModelCommands implements ModelCommands{
 	}
 
 	@Override
-	public void findProduct(String catalogNumberToFind) {
-		findProduct.findProduct(catalogNumberToFind);
+	public boolean findProduct(String catalogNumberToFind) {
+		found=findProduct.findProduct(catalogNumberToFind);
+		if(found==null)
+			return false;
+		return true;
 	}
 
 	@Override
@@ -48,6 +52,34 @@ public class AllModelCommands implements ModelCommands{
 	@Override
 	public String getAllPrfits() {
 		return gelAllProfits.getAllPrfits();
+	}
+	
+	
+	public String getFoundPriceForStore() {
+		return ""+this.found.getPriceForStore();
+	}
+	
+	public String getFoundPriceForCustomer() {
+		return ""+this.found.getPriceForCustomer();
+	}
+	
+	public String getFoundCusName() {
+		return this.found.getBoughtBy().getName();
+	}
+	
+	public String getFoundName() {
+		return this.found.getName();
+	}
+	
+	public String getFoundCusPhone() {
+		return this.found.getBoughtBy().getPhoneNumber();
+	}
+	
+	public String getFoundCusIntrestedInSales() {
+		boolean intrested=this.found.getBoughtBy().isIntrestedInSales();
+		if(intrested)
+			return "True";
+		return "False";
 	}
 
 }

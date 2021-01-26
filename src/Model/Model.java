@@ -8,7 +8,13 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Comparator;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.NoSuchElementException;
+import java.util.Set;
 import java.util.TreeMap;
+
+
 
 public class Model {
 	//for file
@@ -18,7 +24,7 @@ public class Model {
 	private ObjectInputStream oIn;
 	//for data
 	private TreeMap<String, Product> allProducts;
-	private Product found;
+	//private Product found;
 	
 	
 	public Model() {
@@ -46,23 +52,31 @@ public class Model {
 	public boolean readInforamtionFromFile() {
 		try {
 			if (productsFile!=null && productsFile.exists()) {
-				
+//				Iterator<String> iterator = iterator();
+//				if(iterator.hasNext()) {
+//					int orderToSaveProducts=Integer.parseInt(iterator.next());
+//				}
+//				while(iterator.hasNext()) {
+//					String catalogAndProduct= iterator.next();
+//					String[] catalogAndProductArr= catalogAndProduct.split(" ");
+//					
+//					//addProduct(product,catalogAndProductArr[0]);
+//				}
+//				
 				//this is bad. needs to be with iterator
-				oIn = new ObjectInputStream(new FileInputStream(productsFile));
-				int orderToSaveProducts= oIn.readInt();
-				updateSavingMethod(orderToSaveProducts);
-				while (oIn.available() != 0) {
-					String catalogNumber= oIn.readUTF();
-					Product product = (Product) oIn.readObject();
-					addProduct(product,catalogNumber);
-				}
+				//oIn = new ObjectInputStream(new FileInputStream(productsFile));
+				//int orderToSaveProducts= oIn.readInt();
+				//updateSavingMethod(orderToSaveProducts);
+				//while (oIn.available() != 0) {
+				//	String catalogNumber= oIn.readUTF();
+				//	Product product = (Product) oIn.readObject();
+					
+				//}
 				return true;
 			}
 			else {
 				productsFile = new File("products.txt");
 			}
-		} catch (IOException e) {
-		
 		} catch (Exception e) {
 			
 		}
@@ -72,7 +86,10 @@ public class Model {
 	public boolean getReadFromFile() {
 		return this.readFromFile;
 	}
-
+	
+	public Iterator<String> iterator() {
+		return new ProductIterator();
+	}
 
 	public void updateSavingMethod(int orderToSaveProducts) {
 		switch (orderToSaveProducts) {
@@ -134,39 +151,96 @@ public class Model {
 		}
 	}
 		
-	public void findProduct(String catalogNumberToFind) {
-		this.found=null;
+	public Product findProduct(String catalogNumberToFind) {
+		Set<Map.Entry<String, Product>> productSet = allProducts.entrySet();
+		for (Map.Entry<String, Product> entry : productSet) {
+			if(entry.getKey().equals(catalogNumberToFind)) {
+				return entry.getValue();
+			}
+		}
+		return null;
 	}
 	
-	public int getFoundPriceForStore() {
-		return this.found.priceForStore;
-	}
-	
-	public int getFoundPriceForCustomer() {
-		return this.found.priceForCustomer;
-	}
-	
-	public String getFoundCusName() {
-		return this.found.boughtBy.name;
-	}
-	
-	public String getFoundCusPhone() {
-		return this.found.boughtBy.phoneNumber;
-	}
-	
-	public String getFoundCusIntrestedInSales() {
-		boolean intrested=this.found.boughtBy.intrestedInSales;
-		if(intrested)
-			return "True";
-		return "False";
-	}
 
 	public String getAllProducts() {
-		return "abc down\n needs to be down\n is down?";
+		String all="All products in the system:\n";
+		Set<Map.Entry<String, Product>> productSet = allProducts.entrySet();
+		for (Map.Entry<String, Product> entry : productSet) {
+				all+=entry.getValue().toString();
+			}
+		return all;
 	}
 
 	public String getAllPrfits() {
-		return "Profit 1 ....\nProfit 2 .... \nAll Profits ...";
+		String all="All profits in the system:\n";
+		int i=1;
+		int totalProfit=0;
+		Set<Map.Entry<String, Product>> productSet = allProducts.entrySet();
+		for (Map.Entry<String, Product> entry : productSet) {
+				all+="Product "+i+" :";
+				all+=entry.getValue().getProfit()+"\n";
+				totalProfit+=entry.getValue().getProfit();
+				i++;
+			}
+		all+="Total profit: "+totalProfit;
+		return all;
+	}
+	
+	
+	
+	//iterator:
+	private class ProductIterator implements Iterator<String> {
+		private int cur = 0; // the index of element that 'next' will return
+		//private int last = -1; // the index of the element to be removed
+		
+		public ProductIterator() {
+			try {
+				oIn = new ObjectInputStream(new FileInputStream(productsFile));
+			
+			} catch (IOException e) {
+
+			}
+			
+		}
+
+		@Override
+		public boolean hasNext() {
+			try {
+				return cur < oIn.available();
+			} catch (IOException e) {
+			
+			}
+			return false;
+		}
+
+		@Override
+		public String next() {
+			try {
+				if (!hasNext())
+					throw new NoSuchElementException();
+				
+				if (cur == 0) {
+					cur+=Integer.SIZE;
+					return ""+oIn.readInt();
+				}else {
+					String catalogNumber= oIn.readUTF();
+					Product product = (Product) oIn.readObject();
+					cur++;
+					return catalogNumber+" "+product;
+				}
+			} catch (IOException e) {
+				
+			} catch (Exception e) {
+				
+			}
+			return "";
+		}
+
+		@Override
+		public void remove() {
+		
+		}
+
 	}
 
 }

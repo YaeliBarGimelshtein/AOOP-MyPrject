@@ -297,7 +297,7 @@ public class View {
 		if(!isException) {
 			this.noProducts=false;
 			setAllOptionsables();
-			this.error.setText("");
+			this.error.setText("Product Added");
 		}else if (isException && this.noProducts) {
 			this.noProducts=true;
 			setAllOptionsDisables();
@@ -441,6 +441,11 @@ public class View {
 
 	public void addEventHandlerToSendSMS(EventHandler<ActionEvent> sendSMSIsPressed) {
 		this.sendSMS.setOnAction(sendSMSIsPressed);
+	}
+
+
+	public void addEventHandlerToshowAllConfirmedCustomers(EventHandler<ActionEvent> showAllConfirmedCustomers) {
+		this.showAllConfirmedCustomers.setOnAction(showAllConfirmedCustomers);
 	}
 
 

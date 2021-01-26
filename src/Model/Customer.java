@@ -15,6 +15,18 @@ public class Customer {
 	public String toString() {
 		return "Customer: " + name + ", phone Number: " + phoneNumber + ", intrested in sales: " + intrestedInSales;
 	}
+
+	public String getName() {
+		return name;
+	}
+
+	public String getPhoneNumber() {
+		return phoneNumber;
+	}
+
+	public boolean isIntrestedInSales() {
+		return intrestedInSales;
+	}
 	
 	
 }

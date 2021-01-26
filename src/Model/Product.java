@@ -5,6 +5,7 @@ public class Product {
 	int priceForStore;
 	int priceForCustomer;
 	Customer boughtBy;
+	int profit;
 	
 	
 	public Product(String name, int priceForStore, int priceForCustomer, Customer boughtBy) {
@@ -12,6 +13,7 @@ public class Product {
 		this.priceForStore = priceForStore;
 		this.priceForCustomer = priceForCustomer;
 		this.boughtBy = boughtBy;
+		this.profit=priceForCustomer-priceForStore;
 	}
 
 
@@ -19,6 +21,31 @@ public class Product {
 	public String toString() {
 		return "Product: " + name + ", price for store: " + priceForStore + ", price for customer: " + priceForCustomer
 				+ ", bought By: " + boughtBy.toString()+"\n";
+	}
+
+
+	public int getProfit() {
+		return profit;
+	}
+
+
+	public String getName() {
+		return name;
+	}
+
+
+	public int getPriceForStore() {
+		return priceForStore;
+	}
+
+
+	public int getPriceForCustomer() {
+		return priceForCustomer;
+	}
+
+
+	public Customer getBoughtBy() {
+		return boughtBy;
 	}
 	
 	

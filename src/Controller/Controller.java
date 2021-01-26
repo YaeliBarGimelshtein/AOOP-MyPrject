@@ -1,6 +1,5 @@
 package Controller;
 
-import Model.Model;
 import Model.Command.AllModelCommands;
 import View.View;
 import javafx.application.Platform;
@@ -19,6 +18,9 @@ public class Controller {
 		this.commands=theCommands;
 		this.view=theView;
 		
+		
+		
+		//window if not reading from file
 		if(!readFromFile) {
 			ChangeListener<Toggle> savingMethodPicked= new ChangeListener<Toggle>() {
 				@Override
@@ -29,6 +31,12 @@ public class Controller {
 			view.addChangeListenerToGames(savingMethodPicked);
 		}
 		
+		
+		
+		
+		
+		
+		//adding product
 		EventHandler<ActionEvent> addProductIsPressed= new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
@@ -57,6 +65,14 @@ public class Controller {
 		};
 		view.addEventHandlerTodoneInAddProduct(doneInAddProductIsPressed);
 		
+		
+		
+		
+		
+		
+		
+		
+		//showing product
 		EventHandler<ActionEvent> showProductIsPressed= new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
@@ -72,9 +88,11 @@ public class Controller {
 				boolean finished=view.checkChoosingCatalogNumberDone();
 				
 				if(finished) {
-					commands.findProduct(view.getCatalogNumberToFind());
-					//model.getChosenProdect();
-					view.createShowProductView( "pName", "pPriceForStore" , "pPriceForCustomer", "cName", "cPhoneNumber", "cIntrestedInSales");
+					boolean found=commands.findProduct(view.getCatalogNumberToFind());
+					if(found)
+						view.createShowProductView( commands.getFoundName(), commands.getFoundPriceForStore() ,
+								commands.getFoundPriceForCustomer(), commands.getFoundCusName(), commands.getFoundCusPhone(), 
+								commands.getFoundCusIntrestedInSales());
 					
 				}
 			}
@@ -90,6 +108,14 @@ public class Controller {
 		};
 		view.addEventHandlerTodoneInShowProduct(doneInShowProductIsPressed);
 		
+		
+		
+		
+		
+		
+		
+		
+		//show all products
 		EventHandler<ActionEvent> showAllProductsIsPressed= new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
@@ -106,6 +132,13 @@ public class Controller {
 		};
 		view.addEventHandlerTodoneInShowAllProducts(doneInShowAllProductsIsPressed);
 		
+		
+		
+		
+		
+		
+		
+		//to end the program
 		EventHandler<ActionEvent> quitIsPressed= new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
@@ -115,6 +148,13 @@ public class Controller {
 		};
 		view.addEventHandlerToQuit(quitIsPressed);
 		
+		
+		
+		
+		
+		
+		
+		//show all profits
 		EventHandler<ActionEvent> showAllProfitsIsPressed= new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
@@ -132,6 +172,13 @@ public class Controller {
 		view.addEventHandlerTodoneInShowAllProfits(doneInShowAllProfitsIsPressed);
 		
 		
+		
+		
+		
+		
+		
+		
+		//undo last added product
 		EventHandler<ActionEvent> undoLastAddedProductIsPressed= new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
@@ -141,6 +188,14 @@ public class Controller {
 		};
 		view.addEventHandlerToUndoLastAddedProduct(undoLastAddedProductIsPressed);
 		
+		
+		
+		
+		
+		
+		
+		
+		//delete product
 		EventHandler<ActionEvent> deleteProductFromFileIsPressed= new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
@@ -150,6 +205,15 @@ public class Controller {
 		};
 		view.addEventHandlerToDeleteProductFromFile(deleteProductFromFileIsPressed);
 		
+		
+		
+		
+		
+		
+		
+		
+		
+		//delete all products
 		EventHandler<ActionEvent> deleteAllProductFromFileIsPressed= new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
@@ -159,6 +223,15 @@ public class Controller {
 		};
 		view.addEventHandlerToDeleteAllProductFromFile(deleteAllProductFromFileIsPressed);
 		
+		
+		
+		
+		
+		
+		
+		
+		
+		//send sms
 		EventHandler<ActionEvent> sendSMSIsPressed= new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
@@ -167,5 +240,22 @@ public class Controller {
 			}
 		};
 		view.addEventHandlerToSendSMS(sendSMSIsPressed);
+		
+		
+		
+		
+		
+		
+		
+		
+		//show all customers that got the sms
+		EventHandler<ActionEvent> showAllConfirmedCustomers= new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				
+				
+			}
+		};
+		view.addEventHandlerToshowAllConfirmedCustomers(showAllConfirmedCustomers);
 	}
 }

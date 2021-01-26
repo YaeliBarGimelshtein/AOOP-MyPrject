@@ -1,6 +1,7 @@
 package Model.Command;
 
 import Model.Model;
+import Model.Product;
 
 public class findProductCommand {
 	private Model model;
@@ -11,7 +12,7 @@ public class findProductCommand {
 	}
 
 
-	public void findProduct(String catalogNumberToFind) {
-		model.findProduct(catalogNumberToFind);
+	public Product findProduct(String catalogNumberToFind) {
+		return model.findProduct(catalogNumberToFind);
 	}
 }
