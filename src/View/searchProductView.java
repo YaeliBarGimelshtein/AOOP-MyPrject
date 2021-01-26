@@ -78,6 +78,7 @@ public class searchProductView {
 	}
 	
 	public void closeWindow() {
+		this.catalogNumber.setText("");
 		this.stage.close();
 	}
 	

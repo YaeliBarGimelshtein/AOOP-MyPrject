@@ -1,6 +1,7 @@
 package Controller;
 
 import Model.Model;
+import Model.Command.AllModelCommands;
 import View.View;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
@@ -11,19 +12,18 @@ import javafx.scene.control.Toggle;
 
 public class Controller {
 
-	private Model model;
+	private AllModelCommands commands;
 	private View view;
 	
-	public Controller(Model theModel, View theView, boolean readFromFile) {
-		this.model=theModel;
+	public Controller(AllModelCommands theCommands, View theView, boolean readFromFile) {
+		this.commands=theCommands;
 		this.view=theView;
 		
 		if(!readFromFile) {
 			ChangeListener<Toggle> savingMethodPicked= new ChangeListener<Toggle>() {
 				@Override
 				public void changed(ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue) {
-					model.updateSavingMethod(view.getOrderToSaveProducts());
-					model.writeSavingMethodToFile(view.getOrderToSaveProducts());
+					commands.updateSavingMethod(view.getOrderToSaveProducts());
 				}
 			};
 			view.addChangeListenerToGames(savingMethodPicked);
@@ -45,7 +45,7 @@ public class Controller {
 				if(finished) {
 					boolean isException=view.checkInputToAddProductExceptions();
 					if(!isException) {
-						model.addProduct(view.getCatalogNumber(),view.getNewProductName(), view.getNewProductPriceForStore(),
+						commands.addProductByFields(view.getCatalogNumber(),view.getNewProductName(), view.getNewProductPriceForStore(),
 								view.getNewProductPriceForCustomer(), view.getCustomerName(), view.getCustomerNumber(), 
 								view.getIntrestedInSales());
 						view.closeAddProductWindow(isException);
@@ -72,7 +72,7 @@ public class Controller {
 				boolean finished=view.checkChoosingCatalogNumberDone();
 				
 				if(finished) {
-					model.findProduct(view.getCatalogNumberToFind());
+					commands.findProduct(view.getCatalogNumberToFind());
 					//model.getChosenProdect();
 					view.createShowProductView( "pName", "pPriceForStore" , "pPriceForCustomer", "cName", "cPhoneNumber", "cIntrestedInSales");
 					
@@ -93,7 +93,7 @@ public class Controller {
 		EventHandler<ActionEvent> showAllProductsIsPressed= new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				view.createShowAllProductsView(model.getAllProducts());
+				view.createShowAllProductsView(commands.getAllProducts());
 			}
 		};
 		view.addEventHandlerToshowAllProducts(showAllProductsIsPressed);
@@ -118,7 +118,7 @@ public class Controller {
 		EventHandler<ActionEvent> showAllProfitsIsPressed= new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				view.createShowAllProfitsView(model.getAllPrfits());
+				view.createShowAllProfitsView(commands.getAllPrfits());
 			}
 		};
 		view.addEventHandlerToshowAllProfits(showAllProfitsIsPressed);

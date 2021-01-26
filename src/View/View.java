@@ -140,7 +140,7 @@ public class View {
 		this.firstRow=new HBox();
 		this.firstRow.getChildren().addAll(addProduct,getAndShowProduct,showAllProducts);
 		this.firstRow.setAlignment(Pos.CENTER);
-		this.firstRow.setSpacing(20);
+		this.firstRow.setSpacing(42);
 		
 		this.secondRow=new HBox();
 		this.secondRow.getChildren().addAll(undoLastAddedProduct,deleteProductFromFile,deleteAllFromFile);
@@ -150,7 +150,7 @@ public class View {
 		this.thirdRow=new HBox();
 		this.thirdRow.getChildren().addAll(showProfit,sendSMS,showAllConfirmedCustomers);
 		this.thirdRow.setAlignment(Pos.CENTER);
-		this.thirdRow.setSpacing(20);
+		this.thirdRow.setSpacing(43);
 		
 		this.quitBox=new HBox();
 		this.quitBox.getChildren().addAll(quit);
