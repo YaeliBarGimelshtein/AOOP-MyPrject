@@ -141,15 +141,6 @@ public class Controller {
 		};
 		view.addEventHandlerToUndoLastAddedProduct(undoLastAddedProductIsPressed);
 		
-		EventHandler<ActionEvent> readAllFromFileIsPressed= new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				//model.ReadAllFromFile();
-				view.updateWindowToReadAllFromFile();
-			}
-		};
-		view.addEventHandlerToReadAllFromFile(readAllFromFileIsPressed);
-		
 		EventHandler<ActionEvent> deleteProductFromFileIsPressed= new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {

@@ -36,7 +36,6 @@ public class View {
 	private Button getAndShowProduct;
 	private Button showAllProducts;
 	private Button undoLastAddedProduct;
-	private Button readAllFromFile;
 	private Button deleteProductFromFile;
 	private Button deleteAllFromFile;
 	private Button showProfit;
@@ -52,6 +51,7 @@ public class View {
 	//layout
 	private HBox firstRow;
 	private HBox secondRow;
+	private HBox thirdRow;
 	private HBox quitBox;
 	private HBox headLineBox;
 	private HBox errorBox;
@@ -83,7 +83,7 @@ public class View {
 		this.addProduct= new Button("Add product");
 		this.addProduct.setFont(Font.font("Verdana", FontWeight.BOLD, 16));
 		
-		this.getAndShowProduct= new Button("Get and show product");
+		this.getAndShowProduct= new Button("find and show product");
 		this.getAndShowProduct.setFont(Font.font("Verdana", FontWeight.BOLD, 16));
 		if(noProducts)
 			this.getAndShowProduct.setDisable(true);
@@ -98,17 +98,12 @@ public class View {
 		if(noProducts)
 			this.undoLastAddedProduct.setDisable(true);
 		
-		this.readAllFromFile= new Button("Read all from file");
-		this.readAllFromFile.setFont(Font.font("Verdana", FontWeight.BOLD, 16));
-		if(!this.readFromFile)
-			this.readAllFromFile.setDisable(true);
-		
-		this.deleteProductFromFile= new Button("Delete product from file");
+		this.deleteProductFromFile= new Button("Delete product");
 		this.deleteProductFromFile.setFont(Font.font("Verdana", FontWeight.BOLD, 16));
 		if(!this.readFromFile)
 			this.deleteProductFromFile.setDisable(true);
 		
-		this.deleteAllFromFile= new Button("Delete all from file");
+		this.deleteAllFromFile= new Button("Delete all products");
 		this.deleteAllFromFile.setFont(Font.font("Verdana", FontWeight.BOLD, 16));
 		if(!this.readFromFile)
 			this.deleteAllFromFile.setDisable(true);
@@ -143,14 +138,19 @@ public class View {
 		
 		//layout
 		this.firstRow=new HBox();
-		this.firstRow.getChildren().addAll(addProduct,getAndShowProduct,showAllProducts,undoLastAddedProduct,readAllFromFile);
+		this.firstRow.getChildren().addAll(addProduct,getAndShowProduct,showAllProducts);
 		this.firstRow.setAlignment(Pos.CENTER);
-		this.firstRow.setSpacing(15);
+		this.firstRow.setSpacing(20);
 		
 		this.secondRow=new HBox();
-		this.secondRow.getChildren().addAll(deleteProductFromFile,deleteAllFromFile,showProfit,sendSMS,showAllConfirmedCustomers);
+		this.secondRow.getChildren().addAll(undoLastAddedProduct,deleteProductFromFile,deleteAllFromFile);
 		this.secondRow.setAlignment(Pos.CENTER);
 		this.secondRow.setSpacing(15);
+		
+		this.thirdRow=new HBox();
+		this.thirdRow.getChildren().addAll(showProfit,sendSMS,showAllConfirmedCustomers);
+		this.thirdRow.setAlignment(Pos.CENTER);
+		this.thirdRow.setSpacing(20);
 		
 		this.quitBox=new HBox();
 		this.quitBox.getChildren().addAll(quit);
@@ -167,10 +167,11 @@ public class View {
 		HBox.setMargin(error, new Insets(0,0, 30, 0));
 
 		this.allOptions= new VBox();
-		this.allOptions.getChildren().addAll(firstRow,secondRow,quitBox);
-		VBox.setMargin(firstRow, new Insets(150,0, 30, 200));
-		VBox.setMargin(secondRow, new Insets(0,0, 0, 200));
-		VBox.setMargin(quitBox, new Insets(60,0, 0, 200));
+		this.allOptions.getChildren().addAll(firstRow,secondRow,thirdRow,quitBox);
+		VBox.setMargin(firstRow, new Insets(150,0, 30, 100));
+		VBox.setMargin(secondRow, new Insets(0,0, 30, 100));
+		VBox.setMargin(thirdRow, new Insets(0,0, 0, 100));
+		VBox.setMargin(quitBox, new Insets(60,0, 0, 100));
 		this.allOptions.setAlignment(Pos.CENTER);
 		
 		this.centerScreen=new Pane();
@@ -198,7 +199,7 @@ public class View {
 		borders.setTop(headLineBox);
 		borders.setCenter(centerScreen);
 		borders.setBottom(errorBox);
-		Scene scene = new Scene(this.borders,1400,500);
+		Scene scene = new Scene(this.borders,800,550);
 		this.stage.setScene(scene);
 		this.stage.show();
 	}
@@ -313,27 +314,22 @@ public class View {
 		this.error.setText("Last Product deleted");
 	}
 	
-	public void updateWindowToReadAllFromFile() {
-		this.error.setText("Read All From File");
-	}
-	
 	public void updateWindowToDeleteProductFromFile() {
-		this.error.setText("Deleted from file");
+		this.error.setText("Product Deleted");
 	}
 	
 	public void updateWindowToDeleteAllProductFromFile() {
-		this.error.setText("Deleted all from file");
+		this.error.setText("All Products Deleted");
 	}
 	
 	public void updateWindowToToSendSMS() {
-		this.error.setText("SMS sent");
+		this.error.setText("SMS Sent");
 	}
 	
 	public void setAllOptionsDisables() {
 		this.getAndShowProduct.setDisable(true);
 		this.showAllProducts.setDisable(true);
 		this.undoLastAddedProduct.setDisable(true);
-		this.readAllFromFile.setDisable(true);
 		this.deleteProductFromFile.setDisable(true);
 		this.deleteAllFromFile.setDisable(true);
 		this.showProfit.setDisable(true);
@@ -345,7 +341,6 @@ public class View {
 		this.getAndShowProduct.setDisable(false);
 		this.showAllProducts.setDisable(false);
 		this.undoLastAddedProduct.setDisable(false);
-		this.readAllFromFile.setDisable(false);
 		this.deleteProductFromFile.setDisable(false);
 		this.deleteAllFromFile.setDisable(false);
 		this.showProfit.setDisable(false);
@@ -431,11 +426,6 @@ public class View {
 
 	public void addEventHandlerToUndoLastAddedProduct(EventHandler<ActionEvent> undoLastAddedProductIsPressed) {
 		this.undoLastAddedProduct.setOnAction(undoLastAddedProductIsPressed);
-	}
-
-
-	public void addEventHandlerToReadAllFromFile(EventHandler<ActionEvent> readAllFromFileIsPressed) {
-		this.readAllFromFile.setOnAction(readAllFromFileIsPressed);
 	}
 
 

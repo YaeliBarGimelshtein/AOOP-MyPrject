@@ -42,9 +42,9 @@ public class showAllProfitsView {
 		this.allDetails.setSpacing(30);
 		this.allDetails.setAlignment(Pos.CENTER_LEFT);
 		
-		VBox.setMargin(this.headline, new Insets(0, 0, 100, 160));
+		VBox.setMargin(this.headline, new Insets(0, 0, 100, 200));
 		VBox.setMargin(this.allProfits, new Insets(0, 0, 0, 20));
-		VBox.setMargin(this.done, new Insets(50, 0, 0, 200));
+		VBox.setMargin(this.done, new Insets(50, 0, 0, 240));
 		
 		this.screen=new StackPane();
 		this.screen.getChildren().addAll(allDetails);
