@@ -58,7 +58,7 @@ public class Model {
 //				}
 //				while(iterator.hasNext()) {
 //					String catalogAndProduct= iterator.next();
-//					String[] catalogAndProductArr= catalogAndProduct.split(" ");
+//					String[] catalogAndProductArr= catalogAndProduct.split("&");
 //					
 //					//addProduct(product,catalogAndProductArr[0]);
 //				}
@@ -190,13 +190,13 @@ public class Model {
 	
 	//iterator:
 	private class ProductIterator implements Iterator<String> {
-		private int cur = 0; // the index of element that 'next' will return
+		private long startOfFile = 0; // the index of element that 'next' will return
 		//private int last = -1; // the index of the element to be removed
 		
 		public ProductIterator() {
 			try {
 				oIn = new ObjectInputStream(new FileInputStream(productsFile));
-			
+				startOfFile= oIn.available();
 			} catch (IOException e) {
 
 			}
@@ -206,7 +206,7 @@ public class Model {
 		@Override
 		public boolean hasNext() {
 			try {
-				return cur < oIn.available();
+				return 0 < oIn.available();
 			} catch (IOException e) {
 			
 			}
@@ -219,14 +219,12 @@ public class Model {
 				if (!hasNext())
 					throw new NoSuchElementException();
 				
-				if (cur == 0) {
-					cur+=Integer.SIZE;
+				if (startOfFile == oIn.available()) {
 					return ""+oIn.readInt();
 				}else {
 					String catalogNumber= oIn.readUTF();
 					Product product = (Product) oIn.readObject();
-					cur++;
-					return catalogNumber+" "+product;
+					return catalogNumber+"&"+product.toString();
 				}
 			} catch (IOException e) {
 				
