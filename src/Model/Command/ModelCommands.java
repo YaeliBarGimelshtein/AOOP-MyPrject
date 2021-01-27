@@ -11,14 +11,14 @@ public interface ModelCommands {
 	String getAllProducts();
 	String getAllPrfits();
 	void undo();
-	
+	void sendSMS();
 //	void getProduct();
 
 //	void deleteLastProduct();
 //	boolean readDataFromFile();
 //	void deleteProductFromFile();
 //	void deleteAllFromFile();
-//	void sendSMS();
+	
 //	void showAllConfirmedCustomers();
 
 

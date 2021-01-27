@@ -237,7 +237,7 @@ public class Controller {
 		EventHandler<ActionEvent> sendSMSIsPressed= new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				//model.deleteFromFile();
+				commands.sendSMS();
 				view.updateWindowToToSendSMS();
 			}
 		};

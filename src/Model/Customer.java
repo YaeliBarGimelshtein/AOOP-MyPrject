@@ -1,6 +1,8 @@
 package Model;
 
-public class Customer {
+import Model.Observer.Observer;
+
+public class Customer implements Observer {
 	String name;
 	String phoneNumber;
 	boolean intrestedInSales;
@@ -26,6 +28,11 @@ public class Customer {
 
 	public boolean isIntrestedInSales() {
 		return intrestedInSales;
+	}
+
+	@Override
+	public String getSMS() {
+		return this.name;
 	}
 	
 	

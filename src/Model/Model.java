@@ -7,6 +7,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.Map;
@@ -29,6 +30,7 @@ public class Model {
 	private ObjectInputStream oIn;
 	//for data
 	private TreeMap<String, Product> allProducts;
+	private ArrayList<String> allReceivingClients;
 	//private Product found;
 	
 	
@@ -44,6 +46,7 @@ public class Model {
 	private Model() {
 		//read from file if possible
 		this.readFromFile = readInforamtionFromFile();
+		this.allReceivingClients= new ArrayList<>();
 		// to be able to write
 		try {
 			if (readFromFile) {
@@ -70,6 +73,14 @@ public class Model {
 	public void load(ModelMemento lastModel) {
 		this.allProducts=lastModel.getAllProducts();
 		//delete from file last product!!!!!
+	}
+	
+	// Notify
+	public void sendSMS() {
+		Set<Map.Entry<String, Product>> productSet = allProducts.entrySet();
+		for (Map.Entry<String, Product> entry : productSet) {
+				this.allReceivingClients.add(entry.getValue().getBoughtBy().getSMS());
+			}
 	}
 	
 	public boolean readInforamtionFromFile() {
@@ -202,11 +213,11 @@ public class Model {
 		Set<Map.Entry<String, Product>> productSet = allProducts.entrySet();
 		for (Map.Entry<String, Product> entry : productSet) {
 				all+="Product "+i+" :";
-				all+=entry.getValue().getProfit()+"\n";
+				all+=entry.getValue().getProfit()+"₪\n";
 				totalProfit+=entry.getValue().getProfit();
 				i++;
 			}
-		all+="Total profit: "+totalProfit;
+		all+="Total profit: "+totalProfit+"₪";
 		return all;
 	}
 	

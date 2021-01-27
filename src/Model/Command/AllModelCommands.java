@@ -13,7 +13,7 @@ public class AllModelCommands implements ModelCommands{
 	private Product found;
 	private undoCommand undoCommand;
 	private CareTaker lastStatus;
-	
+	private sendSMSCommand sentSMS;
 
 	public AllModelCommands(Model model) {
 		this.addProduct= new AddProductCommand(model);
@@ -23,6 +23,7 @@ public class AllModelCommands implements ModelCommands{
 		this.gelAllProfits=new gelAllProfitsCommand(model);
 		this.lastStatus= new CareTaker();
 		this.undoCommand= new undoCommand(model);
+		this.sentSMS= new sendSMSCommand(model);
 	}
 
 	@Override
@@ -89,5 +90,10 @@ public class AllModelCommands implements ModelCommands{
 
 	public void undo() {
 		this.undoCommand.undo(lastStatus.undo());
+	}
+
+	@Override
+	public void sendSMS() {
+		sentSMS.sendSMS();
 	}
 }
