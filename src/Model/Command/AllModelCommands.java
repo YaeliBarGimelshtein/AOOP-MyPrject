@@ -2,6 +2,7 @@ package Model.Command;
 
 import Model.Model;
 import Model.Product;
+import Model.Memento.CareTaker;
 
 public class AllModelCommands implements ModelCommands{
 	private AddProductCommand addProduct;
@@ -10,6 +11,8 @@ public class AllModelCommands implements ModelCommands{
 	private getAllProductsCommand getAllProducts;
 	private gelAllProfitsCommand gelAllProfits;
 	private Product found;
+	private undoCommand undoCommand;
+	private CareTaker lastStatus;
 	
 
 	public AllModelCommands(Model model) {
@@ -18,17 +21,19 @@ public class AllModelCommands implements ModelCommands{
 		this.findProduct= new findProductCommand(model);
 		this.getAllProducts= new getAllProductsCommand(model);
 		this.gelAllProfits=new gelAllProfitsCommand(model);
+		this.lastStatus= new CareTaker();
+		this.undoCommand= new undoCommand(model);
 	}
 
 	@Override
 	public void addProductByObject(Product p, String catalogNumber) {
-		addProduct.addProductByObject(p, catalogNumber);
+		addProduct.addProductByObject(lastStatus,p, catalogNumber);
 	}
 
 	@Override
 	public void addProductByFields(String catalogNumber, String name, int priceForStore, int priceForCustomer,
 			String Cname, String CphoneNumber, boolean intrestedInSales) {
-		addProduct.addProductByFields(catalogNumber, name, priceForStore, priceForCustomer, Cname, CphoneNumber, intrestedInSales);
+		addProduct.addProductByFields(lastStatus,catalogNumber, name, priceForStore, priceForCustomer, Cname, CphoneNumber, intrestedInSales);
 	}
 
 	@Override
@@ -82,4 +87,7 @@ public class AllModelCommands implements ModelCommands{
 		return "False";
 	}
 
+	public void undo() {
+		this.undoCommand.undo(lastStatus.undo());
+	}
 }

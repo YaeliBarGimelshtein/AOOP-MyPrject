@@ -10,6 +10,7 @@ public interface ModelCommands {
 	boolean findProduct(String catalogNumberToFind);
 	String getAllProducts();
 	String getAllPrfits();
+	void undo();
 	
 //	void getProduct();
 
@@ -19,6 +20,6 @@ public interface ModelCommands {
 //	void deleteAllFromFile();
 //	void sendSMS();
 //	void showAllConfirmedCustomers();
-//	void updateSavingMethod();
-//	void writeSavingMethodToFile();
+
+
 }

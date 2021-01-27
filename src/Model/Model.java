@@ -14,6 +14,9 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.TreeMap;
 
+import Model.Memento.CareTaker;
+import Model.Memento.ModelMemento;
+
 
 
 public class Model {
@@ -58,6 +61,15 @@ public class Model {
 		} catch (IOException e) {
 			
 		}
+	}
+	
+	public ModelMemento save() {
+		return new ModelMemento(this.allProducts);
+	}
+	
+	public void load(ModelMemento lastModel) {
+		this.allProducts=lastModel.getAllProducts();
+		//delete from file last product!!!!!
 	}
 	
 	public boolean readInforamtionFromFile() {
@@ -141,15 +153,16 @@ public class Model {
 		}
 	}
 
-	public void addProduct(String catalogNumber, String name, int priceForStore, int priceForCustomer,
+	public void addProduct(CareTaker lastStatus,String catalogNumber, String name, int priceForStore, int priceForCustomer,
 			String Cname, String CphoneNumber, boolean intrestedInSales) {
 		Customer boughtBy= new Customer(Cname, CphoneNumber, intrestedInSales);
 		Product p= new Product(name, priceForStore, priceForCustomer, boughtBy);
-		addProduct(p, catalogNumber);
+		addProduct(lastStatus,p, catalogNumber);
 	}
 	
-	public void addProduct(Product p, String catalogNumber) {
+	public void addProduct(CareTaker lastStatus, Product p, String catalogNumber) {
 		allProducts.put(catalogNumber, p);
+		lastStatus.save(this.save());
 		writeProductToFile(p,catalogNumber);
 	}
 

@@ -72,7 +72,7 @@ public class Controller {
 		
 		
 		
-		//showing product
+		//showing searched product
 		EventHandler<ActionEvent> showProductIsPressed= new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
@@ -93,7 +93,9 @@ public class Controller {
 						view.createShowProductView( commands.getFoundName(), commands.getFoundPriceForStore() ,
 								commands.getFoundPriceForCustomer(), commands.getFoundCusName(), commands.getFoundCusPhone(), 
 								commands.getFoundCusIntrestedInSales());
-					
+					else {
+						view.closeShowNotFoundAndBackToMenu();
+					}
 				}
 			}
 		};
@@ -182,7 +184,7 @@ public class Controller {
 		EventHandler<ActionEvent> undoLastAddedProductIsPressed= new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				//model.undo();
+				commands.undo();
 				view.updateWindowToUndo();
 			}
 		};

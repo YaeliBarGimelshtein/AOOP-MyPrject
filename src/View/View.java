@@ -228,6 +228,12 @@ public class View {
 		this.showProductView.show();
 	}
 	
+	public void closeShowNotFoundAndBackToMenu() {
+		this.searchProductByCatalogNumberView.closeWindow();
+		this.error.setText("No such Catalog Number");
+		this.stage.show();
+	}
+	
 	public void createShowAllProductsView(String allProducts) {
 		this.stage.close();
 		this.showAllProductsView.updateToAllProducts(allProducts);
@@ -447,6 +453,9 @@ public class View {
 	public void addEventHandlerToshowAllConfirmedCustomers(EventHandler<ActionEvent> showAllConfirmedCustomers) {
 		this.showAllConfirmedCustomers.setOnAction(showAllConfirmedCustomers);
 	}
+
+
+	
 
 
 	
