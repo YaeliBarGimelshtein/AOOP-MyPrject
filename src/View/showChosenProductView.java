@@ -77,7 +77,7 @@ public class showChosenProductView {
 		this.screen=new StackPane();
 		this.screen.getChildren().addAll(allDetails);
 		
-		Scene scene = new Scene(screen,600,600);
+		Scene scene = new Scene(screen,1200,600);
 		
 		this.stage=stage;
 		this.stage.setScene(scene);

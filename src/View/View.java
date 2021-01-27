@@ -224,7 +224,7 @@ public class View {
 	public void createShowProductView(String pName, String pPriceForStore, String pPriceForCustomer, String cName, String cPhoneNumber,
 			String cIntrestedInSales) {
 		this.searchProductByCatalogNumberView.closeWindow();
-		this.showProductView.updateInfo("yoyo","30","20","koko","0503299910","true");
+		this.showProductView.updateInfo( pName,  pPriceForStore,  pPriceForCustomer,  cName,  cPhoneNumber, cIntrestedInSales);
 		this.showProductView.show();
 	}
 	

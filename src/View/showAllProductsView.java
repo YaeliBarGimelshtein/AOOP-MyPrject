@@ -1,6 +1,5 @@
 package View;
 
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -40,19 +39,20 @@ public class showAllProductsView {
 		this.allDetails = new VBox();
 		this.allDetails.getChildren().addAll(headline,allProducts,done);
 		this.allDetails.setSpacing(30);
-		this.allDetails.setAlignment(Pos.CENTER_LEFT);
+		this.allDetails.setAlignment(Pos.CENTER);
 		
-		VBox.setMargin(this.headline, new Insets(0, 0, 100, 160));
-		VBox.setMargin(this.allProducts, new Insets(0, 0, 0, 20));
-		VBox.setMargin(this.done, new Insets(50, 0, 0, 200));
-		
+//		VBox.setMargin(this.headline, new Insets(0, 0, 100, 160));
+//		VBox.setMargin(this.allProducts, new Insets(0, 0, 0, 20));
+//		VBox.setMargin(this.done, new Insets(50, 0, 0, 200));
+//		
 		this.screen=new StackPane();
 		this.screen.getChildren().addAll(allDetails);
 		
-		Scene scene = new Scene(screen,600,600);
+		Scene scene = new Scene(screen,1300,600);
 		
 		this.stage=stage;
 		this.stage.setScene(scene);
+		//this.stage.setFullScreen(true);
 
 	}
 	

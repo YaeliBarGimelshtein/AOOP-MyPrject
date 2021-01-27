@@ -17,6 +17,8 @@ import java.util.TreeMap;
 
 
 public class Model {
+	//fir singelton
+	private static Model model;
 	//for file
 	private boolean readFromFile;
 	private File productsFile;
@@ -27,7 +29,16 @@ public class Model {
 	//private Product found;
 	
 	
-	public Model() {
+	//model is a singelton
+	public static Model getModel() {
+		if(model==null) {
+			model=new Model();
+		}
+		return model;
+	}
+	
+	
+	private Model() {
 		//read from file if possible
 		this.readFromFile = readInforamtionFromFile();
 		// to be able to write

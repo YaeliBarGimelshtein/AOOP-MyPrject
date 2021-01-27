@@ -15,7 +15,7 @@ public class program extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		Model theModel = new Model();
+		Model theModel = Model.getModel();
 		boolean readFromFile= theModel.getReadFromFile();
 		AllModelCommands commands= new AllModelCommands(theModel);
 		View theView = new View(primaryStage,readFromFile);
