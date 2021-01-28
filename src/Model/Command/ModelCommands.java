@@ -1,5 +1,6 @@
 package Model.Command;
 
+import java.util.ArrayList;
 import Model.Product;
 
 public interface ModelCommands {
@@ -12,6 +13,7 @@ public interface ModelCommands {
 	String getAllPrfits();
 	void undo();
 	void sendSMS();
+	ArrayList<String> getAllConfirmedCustomers();
 //	void getProduct();
 
 //	void deleteLastProduct();
@@ -19,7 +21,7 @@ public interface ModelCommands {
 //	void deleteProductFromFile();
 //	void deleteAllFromFile();
 	
-//	void showAllConfirmedCustomers();
+
 
 
 }

@@ -13,6 +13,8 @@ public class CareTaker {
 
 
 	public void save(ModelMemento lastModel) {
+		while(!stack.empty())
+			stack.pop();
 		this.stack.push(lastModel);
 	}
 	

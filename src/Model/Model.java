@@ -166,6 +166,12 @@ public class Model {
 
 	public void addProduct(CareTaker lastStatus,String catalogNumber, String name, int priceForStore, int priceForCustomer,
 			String Cname, String CphoneNumber, boolean intrestedInSales) {
+		if(priceForCustomer<0) 
+			priceForCustomer=0;
+		
+		if(priceForStore<0) 
+			priceForStore=0;
+		
 		Customer boughtBy= new Customer(Cname, CphoneNumber, intrestedInSales);
 		Product p= new Product(name, priceForStore, priceForCustomer, boughtBy);
 		addProduct(lastStatus,p, catalogNumber);
@@ -274,6 +280,11 @@ public class Model {
 		
 		}
 
+	}
+
+
+	public ArrayList<String> getAllConfirmedCustomers() {
+		return this.allReceivingClients;
 	}
 
 }

@@ -1,5 +1,7 @@
 package View;
 
+import java.util.ArrayList;
+
 import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -27,6 +29,7 @@ public class View {
 	private searchProductView searchProductByCatalogNumberView;
 	private showAllProductsView showAllProductsView;
 	private showAllProfitsView showAllProfits;
+	private showAllCustometsReceivedSMS allCustomersWithSMS;
 	
 	private Stage stage;
 	private boolean readFromFile;
@@ -75,6 +78,7 @@ public class View {
 		this.showProductView= new showChosenProductView(new Stage());
 		this.showAllProductsView=new showAllProductsView(new Stage());
 		this.showAllProfits=new showAllProfitsView(new Stage());
+		this.allCustomersWithSMS=new showAllCustometsReceivedSMS(new Stage());
 		
 		//buttons
 		this.quit= new Button("Save and quit");
@@ -120,8 +124,7 @@ public class View {
 		
 		this.showAllConfirmedCustomers= new Button("Show all confirmed customers");
 		this.showAllConfirmedCustomers.setFont(Font.font("Verdana", FontWeight.BOLD, 16));
-		if(noProducts)
-			this.showAllConfirmedCustomers.setDisable(true);
+		this.showAllConfirmedCustomers.setDisable(true);
 		
 		//text
 		this.headLine= new Label("Saving Products Program");
@@ -245,12 +248,15 @@ public class View {
 		this.showAllProfits.updateToAllProducts(allPrfits);
 		this.showAllProfits.show();
 	}
-
+	
+	public void createWindowToAllConfirmedCustomers(ArrayList<String> allConfirmedCustomers) {
+		this.allCustomersWithSMS.getAllCustomers(allConfirmedCustomers);
+		this.allCustomersWithSMS.show();
+	}
 	
 	public boolean checkAddProductDone() { //to add product	
 		return this.addProductView.checkAddProductDone();
 	}
-	
 
 	
 	public boolean checkChoosingCatalogNumberDone() {
@@ -329,6 +335,7 @@ public class View {
 	}
 	
 	public void updateWindowToToSendSMS() {
+		this.showAllConfirmedCustomers.setDisable(false);
 		this.error.setText("SMS Sent");
 	}
 	
@@ -351,7 +358,7 @@ public class View {
 		this.deleteAllFromFile.setDisable(false);
 		this.showProfit.setDisable(false);
 		this.sendSMS.setDisable(false);
-		this.showAllConfirmedCustomers.setDisable(false);
+		this.showAllConfirmedCustomers.setDisable(true);
 	}
 	
 	
@@ -453,6 +460,9 @@ public class View {
 	public void addEventHandlerToshowAllConfirmedCustomers(EventHandler<ActionEvent> showAllConfirmedCustomers) {
 		this.showAllConfirmedCustomers.setOnAction(showAllConfirmedCustomers);
 	}
+
+
+
 
 
 	

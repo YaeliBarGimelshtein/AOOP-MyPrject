@@ -60,6 +60,7 @@ public class addProdectView {
 		this.intrestedInSalesYes=new RadioButton("Yes");
 		this.intrestedInSalesYes.setFont(Font.font("Verdana", FontWeight.BOLD, 16));
 		this.intrestedInSalesYes.setToggleGroup(group);
+		this.intrestedInSalesYes.setSelected(true);
 		
 		this.intrestedInSalesNo=new RadioButton("No");
 		this.intrestedInSalesNo.setFont(Font.font("Verdana", FontWeight.BOLD, 16));
@@ -160,8 +161,7 @@ public class addProdectView {
 
 
 	public boolean checkAddProductDone() {
-		if(name.getText().isEmpty() || priceForStore.getText().isEmpty() || priceForCustomer.getText().isEmpty() ||
-				customerName.getText().isEmpty() || phoneNumber.getText().isEmpty() || catalogNumber.getText().isEmpty()) {
+		if(catalogNumber.getText().isEmpty() ||customerName.getText().isEmpty() || phoneNumber.getText().isEmpty()) {
 			Alert msg = new Alert(AlertType.ERROR);
 			msg.setContentText("Must add all values");
 			msg.setTitle("Not Valid");
@@ -174,12 +174,16 @@ public class addProdectView {
 	//need to make exceptions
 
 	public String getName() {
+		if(name.getText().isEmpty())
+			return "No Name added";
 		return this.name.getText();
 	}
 	
 	
 	public int getPriceForStore() {
 		try {
+			if(priceForStore.getText().isEmpty())
+				return 0;
 			return Integer.parseInt(priceForStore.getText());
 		} catch (NumberFormatException e) {
 			return -1;
@@ -192,6 +196,8 @@ public class addProdectView {
 
 	public int getPriceForCustomer() {
 		try {
+			if(priceForCustomer.getText().isEmpty())
+				return 0;
 			return Integer.parseInt(priceForCustomer.getText());
 		} catch (NumberFormatException e) {
 			return -1;

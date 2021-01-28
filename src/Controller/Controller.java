@@ -254,7 +254,7 @@ public class Controller {
 		EventHandler<ActionEvent> showAllConfirmedCustomers= new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				
+				view.createWindowToAllConfirmedCustomers(commands.getAllConfirmedCustomers());
 				
 			}
 		};

@@ -1,5 +1,7 @@
 package Model.Command;
 
+import java.util.ArrayList;
+
 import Model.Model;
 import Model.Product;
 import Model.Memento.CareTaker;
@@ -14,6 +16,7 @@ public class AllModelCommands implements ModelCommands{
 	private undoCommand undoCommand;
 	private CareTaker lastStatus;
 	private sendSMSCommand sentSMS;
+	private getAllConfirmedCustomers allConfirmed;
 
 	public AllModelCommands(Model model) {
 		this.addProduct= new AddProductCommand(model);
@@ -24,6 +27,7 @@ public class AllModelCommands implements ModelCommands{
 		this.lastStatus= new CareTaker();
 		this.undoCommand= new undoCommand(model);
 		this.sentSMS= new sendSMSCommand(model);
+		this.allConfirmed= new getAllConfirmedCustomers(model);
 	}
 
 	@Override
@@ -94,6 +98,11 @@ public class AllModelCommands implements ModelCommands{
 
 	@Override
 	public void sendSMS() {
-		sentSMS.sendSMS();
+		this.sentSMS.sendSMS();
+	}
+
+	@Override
+	public ArrayList<String> getAllConfirmedCustomers() {
+		return this.allConfirmed.getAllConfirmed();
 	}
 }
