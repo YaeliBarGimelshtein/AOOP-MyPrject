@@ -19,6 +19,8 @@ public class CareTaker {
 	}
 	
 	public ModelMemento undo() {
+		if(this.stack.empty())
+			return null;
 		return this.stack.pop();
 	}
 }

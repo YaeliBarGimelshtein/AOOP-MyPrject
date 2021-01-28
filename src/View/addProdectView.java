@@ -227,7 +227,7 @@ public class addProdectView {
 		this.phoneNumber.setText("");
 		this.catalogNumber.setText("");
 		this.intrestedInSalesNo.setSelected(false);
-		this.intrestedInSalesYes.setSelected(false);
+		this.intrestedInSalesYes.setSelected(true);
 		this.stage.close();
 	}
 

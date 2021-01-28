@@ -259,5 +259,13 @@ public class Controller {
 			}
 		};
 		view.addEventHandlerToshowAllConfirmedCustomers(showAllConfirmedCustomers);
+		
+		EventHandler<ActionEvent> doneInshowAllConfirmedCustomersIsPressed= new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				view.closeShowAllConfirmedCustomersWindow();
+			}
+		};
+		view.addEventHandlerTodoneInshowAllConfirmedCustomersIsPressed(doneInshowAllConfirmedCustomersIsPressed);
 	}
 }

@@ -31,8 +31,7 @@ public class Model {
 	//for data
 	private TreeMap<String, Product> allProducts;
 	private ArrayList<String> allReceivingClients;
-	//private Product found;
-	
+	private int savingMethod;
 	
 	//model is a singelton
 	public static Model getModel() {
@@ -67,11 +66,19 @@ public class Model {
 	}
 	
 	public ModelMemento save() {
-		return new ModelMemento(this.allProducts);
+		TreeMap<String, Product> copy= new TreeMap<>();
+		copy.putAll(this.allProducts);
+		return new ModelMemento(copy);
 	}
 	
-	public void load(ModelMemento lastModel) {
-		this.allProducts=lastModel.getAllProducts();
+	public void load(ModelMemento lastModel) { 
+		if(lastModel==null) {
+			updateSavingMethod(this.savingMethod);
+		}else {
+			this.allProducts=lastModel.getAllProducts();
+		}
+		if(allReceivingClients.size()>0)
+			this.allReceivingClients.remove(allReceivingClients.size()-1);
 		//delete from file last product!!!!!
 	}
 	
@@ -85,8 +92,10 @@ public class Model {
 	
 	public boolean readInforamtionFromFile() {
 		try {
-			if (productsFile!=null && productsFile.exists()) {
+			productsFile = new File("products.txt");
+//			if (productsFile.exists()) {
 //				Iterator<String> iterator = iterator();
+//				this.allProducts= new TreeMap<>();			
 //				if(iterator.hasNext()) {
 //					int orderToSaveProducts=Integer.parseInt(iterator.next());
 //				}
@@ -106,11 +115,8 @@ public class Model {
 				//	Product product = (Product) oIn.readObject();
 					
 				//}
-				return true;
-			}
-			else {
-				productsFile = new File("products.txt");
-			}
+//				return true;
+//			}
 		} catch (Exception e) {
 			
 		}
@@ -126,6 +132,7 @@ public class Model {
 	}
 
 	public void updateSavingMethod(int orderToSaveProducts) {
+		this.savingMethod=orderToSaveProducts;
 		switch (orderToSaveProducts) {
 		case 0:
 			this.allProducts= new TreeMap<>(new Comparator<String>() { //Ascending
@@ -178,8 +185,8 @@ public class Model {
 	}
 	
 	public void addProduct(CareTaker lastStatus, Product p, String catalogNumber) {
-		allProducts.put(catalogNumber, p);
 		lastStatus.save(this.save());
+		allProducts.put(catalogNumber, p);
 		writeProductToFile(p,catalogNumber);
 	}
 
@@ -205,6 +212,10 @@ public class Model {
 
 	public String getAllProducts() {
 		String all="All products in the system:\n";
+		if(allProducts.size()==0) {
+			all="No products";
+			return all;
+		}
 		Set<Map.Entry<String, Product>> productSet = allProducts.entrySet();
 		for (Map.Entry<String, Product> entry : productSet) {
 				all+=entry.getValue().toString();

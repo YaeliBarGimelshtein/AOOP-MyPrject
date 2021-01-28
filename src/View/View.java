@@ -252,6 +252,7 @@ public class View {
 	public void createWindowToAllConfirmedCustomers(ArrayList<String> allConfirmedCustomers) {
 		this.allCustomersWithSMS.getAllCustomers(allConfirmedCustomers);
 		this.allCustomersWithSMS.show();
+		this.allCustomersWithSMS.showAllCustomers();
 	}
 	
 	public boolean checkAddProductDone() { //to add product	
@@ -361,6 +362,9 @@ public class View {
 		this.showAllConfirmedCustomers.setDisable(true);
 	}
 	
+	public void closeShowAllConfirmedCustomersWindow() {
+		this.allCustomersWithSMS.close();
+	}
 	
 	public void closeShowProductWindow() {
 		this.showProductView.closeWindow();
@@ -460,6 +464,14 @@ public class View {
 	public void addEventHandlerToshowAllConfirmedCustomers(EventHandler<ActionEvent> showAllConfirmedCustomers) {
 		this.showAllConfirmedCustomers.setOnAction(showAllConfirmedCustomers);
 	}
+
+
+	public void addEventHandlerTodoneInshowAllConfirmedCustomersIsPressed(EventHandler<ActionEvent> doneInshowAllConfirmedCustomersIsPressed) {
+		this.allCustomersWithSMS.getDoneButton().setOnAction(doneInshowAllConfirmedCustomersIsPressed);
+	}
+
+
+	
 
 
 
