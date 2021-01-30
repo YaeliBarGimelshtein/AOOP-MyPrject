@@ -279,6 +279,7 @@ public class Controller {
 			public void handle(ActionEvent event) {
 				if(commands.checkIfAreProducts()==true) {
 					view.createWindowToAllConfirmedCustomers(commands.getAllConfirmedCustomers());
+					commands.resetAllConfirmedCustomers();
 				}else {
 					view.createWindowToUnableAllConfirmedCustomers();
 				}

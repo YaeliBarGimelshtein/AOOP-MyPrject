@@ -103,7 +103,8 @@ public class showAllCustometsReceivedSMS {
 						});
 					}
 					Platform.runLater(() -> {
-						done.setDisable(false);
+						if(count==allToshow.size())
+							done.setDisable(false);
 					});
 				} catch (InterruptedException e1) {
 
@@ -129,8 +130,7 @@ public class showAllCustometsReceivedSMS {
 		}
 		this.allToshow.removeAll(allToshow);
 		this.count=0;
+		this.done.setDisable(true);
 		this.stage.close();
 	}
-
-	
 }

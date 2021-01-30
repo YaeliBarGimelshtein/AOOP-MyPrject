@@ -1,11 +1,11 @@
 package Model;
 
 public class Product {
-	String name;
-	int priceForStore;
-	int priceForCustomer;
+	private String name;
+	private int priceForStore;
+	private int priceForCustomer;
 	private Customer boughtBy;
-	int profit;
+	private int profit;
 	
 	
 	public Product(String name, int priceForStore, int priceForCustomer, Customer boughtBy) {

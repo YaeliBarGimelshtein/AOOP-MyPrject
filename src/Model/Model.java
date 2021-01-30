@@ -74,10 +74,8 @@ public class Model {
 	public void load(ModelMemento lastModel) { 
 		if(lastModel.getAllProducts().size()==0) {
 			updateSavingMethod(this.savingMethod);
-			allReceivingClients=new ArrayList<>();
 		}else {
 			this.allProducts=lastModel.getAllProducts();
-			this.allReceivingClients.remove(allReceivingClients.size()-1);
 		}
 		
 		//delete from file last product!!!!!
@@ -128,7 +126,7 @@ public class Model {
 		return this.readFromFile;
 	}
 	
-	public Iterator<String> iterator() {
+	public Iterator<Product> iterator() {
 		return new ProductIterator();
 	}
 
@@ -166,7 +164,8 @@ public class Model {
 	
 	public void writeSavingMethodToFile(int orderToSaveProducts) {
 		try {
-			oOut.writeInt(orderToSaveProducts);
+			Product savingMethod= new Product("", orderToSaveProducts, 0, null);
+			oOut.writeObject(savingMethod);
 		} catch (IOException e) {
 			
 		}
@@ -188,15 +187,13 @@ public class Model {
 	public void addProduct(CareTaker lastStatus, Product p, String catalogNumber) {
 		lastStatus.save(this.save());
 		allProducts.put(catalogNumber, p);
-		if(p.getBoughtBy().intrestedInSales==true){
-			allReceivingClients.add(p.getBoughtBy().getName());
-		}
 		writeProductToFile(p,catalogNumber);
 	}
 
 	public void writeProductToFile(Product p, String catalogNumber) {
 		try {
-			oOut.writeUTF(catalogNumber);
+			Product catalog= new Product(catalogNumber, 0, 0, null);
+			oOut.writeObject(catalog);
 			oOut.writeObject(p);
 		} catch (IOException e) {
 			
@@ -242,62 +239,6 @@ public class Model {
 		return all;
 	}
 	
-	
-	
-	//iterator:
-	private class ProductIterator implements Iterator<String> {
-		private long startOfFile = 0; // the index of element that 'next' will return
-		//private int last = -1; // the index of the element to be removed
-		
-		public ProductIterator() {
-			try {
-				oIn = new ObjectInputStream(new FileInputStream(productsFile));
-				startOfFile= oIn.available();
-			} catch (IOException e) {
-
-			}
-			
-		}
-
-		@Override
-		public boolean hasNext() {
-			try {
-				return 0 < oIn.available();
-			} catch (IOException e) {
-			
-			}
-			return false;
-		}
-
-		@Override
-		public String next() {
-			try {
-				if (!hasNext())
-					throw new NoSuchElementException();
-				
-				if (startOfFile == oIn.available()) {
-					return ""+oIn.readInt();
-				}else {
-					String catalogNumber= oIn.readUTF();
-					Product product = (Product) oIn.readObject();
-					return catalogNumber+"&"+product.toString();
-				}
-			} catch (IOException e) {
-				
-			} catch (Exception e) {
-				
-			}
-			return "";
-		}
-
-		@Override
-		public void remove() {
-		
-		}
-
-	}
-
-
 	public ArrayList<String> getAllConfirmedCustomers() {
 		if(this.allReceivingClients.size()==0) 
 			return null;
@@ -310,5 +251,62 @@ public class Model {
 			return false;
 		return true;
 	}
+
+
+	public void resetAllConfirmedCustomers() {
+		this.allReceivingClients=new ArrayList<>();
+	}
+	
+	
+	//iterator:
+	private class ProductIterator implements Iterator<Product> {
+		private long current; // the index of element that 'next' will return
+		//private int last = -1; // the index of the element to be removed
+		
+		public ProductIterator() {
+			try {
+				oIn = new ObjectInputStream(new FileInputStream(productsFile));
+				current= 0;
+			} catch (IOException e) {
+
+			}
+			
+		}
+
+		@Override
+		public boolean hasNext() {
+			try {
+				return current < oIn.available();
+			} catch (IOException e) {
+			
+			}
+			return false;
+		}
+
+		@Override
+		public Product next() {
+			try {
+				if (!hasNext())
+					throw new NoSuchElementException();
+				Product product = (Product) oIn.readObject();
+				//cur+sizeof
+				return product;
+			} catch (IOException e) {
+				
+			} catch (Exception e) {
+				
+			}
+			return null;
+		}
+
+		@Override
+		public void remove() {
+		
+		}
+
+	}
+
+
+	
 
 }

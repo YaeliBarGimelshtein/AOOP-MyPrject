@@ -112,4 +112,8 @@ public class AllModelCommands implements ModelCommands{
 	public boolean checkIfAreProducts() {
 		return this.areProducts.checkIfAreProducts();
 	}
+
+	public void resetAllConfirmedCustomers() {
+		this.allConfirmed.resetAllConfirmed();
+	}
 }

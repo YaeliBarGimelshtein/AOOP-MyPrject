@@ -14,4 +14,8 @@ public class getAllConfirmedCustomers {
 	public ArrayList<String> getAllConfirmed(){
 		return model.getAllConfirmedCustomers();
 	}
+
+	public void resetAllConfirmed() {
+		model.resetAllConfirmedCustomers();
+	}
 }
