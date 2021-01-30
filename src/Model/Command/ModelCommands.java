@@ -14,6 +14,7 @@ public interface ModelCommands {
 	void undo();
 	void sendSMS();
 	ArrayList<String> getAllConfirmedCustomers();
+	boolean checkIfAreProducts();
 //	void getProduct();
 
 //	void deleteLastProduct();

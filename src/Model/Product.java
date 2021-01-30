@@ -4,7 +4,7 @@ public class Product {
 	String name;
 	int priceForStore;
 	int priceForCustomer;
-	Customer boughtBy;
+	private Customer boughtBy;
 	int profit;
 	
 	

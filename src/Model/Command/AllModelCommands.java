@@ -17,6 +17,7 @@ public class AllModelCommands implements ModelCommands{
 	private CareTaker lastStatus;
 	private sendSMSCommand sentSMS;
 	private getAllConfirmedCustomers allConfirmed;
+	private checkIfAreProductsCommand areProducts;
 
 	public AllModelCommands(Model model) {
 		this.addProduct= new AddProductCommand(model);
@@ -28,6 +29,7 @@ public class AllModelCommands implements ModelCommands{
 		this.undoCommand= new undoCommand(model);
 		this.sentSMS= new sendSMSCommand(model);
 		this.allConfirmed= new getAllConfirmedCustomers(model);
+		this.areProducts=new checkIfAreProductsCommand(model);
 	}
 
 	@Override
@@ -104,5 +106,10 @@ public class AllModelCommands implements ModelCommands{
 	@Override
 	public ArrayList<String> getAllConfirmedCustomers() {
 		return this.allConfirmed.getAllConfirmed();
+	}
+
+	@Override
+	public boolean checkIfAreProducts() {
+		return this.areProducts.checkIfAreProducts();
 	}
 }

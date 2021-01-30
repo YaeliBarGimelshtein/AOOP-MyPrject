@@ -89,38 +89,26 @@ public class View {
 		
 		this.getAndShowProduct= new Button("find and show product");
 		this.getAndShowProduct.setFont(Font.font("Verdana", FontWeight.BOLD, 16));
-		if(noProducts)
-			this.getAndShowProduct.setDisable(true);
 		
 		this.showAllProducts= new Button("Show all products");
 		this.showAllProducts.setFont(Font.font("Verdana", FontWeight.BOLD, 16));
-		if(noProducts)
-			this.showAllProducts.setDisable(true);
 		
 		this.undoLastAddedProduct= new Button("Undo last added product");
 		this.undoLastAddedProduct.setFont(Font.font("Verdana", FontWeight.BOLD, 16));
-		if(noProducts)
-			this.undoLastAddedProduct.setDisable(true);
 		
 		this.deleteProductFromFile= new Button("Delete product");
 		this.deleteProductFromFile.setFont(Font.font("Verdana", FontWeight.BOLD, 16));
-		if(!this.readFromFile)
-			this.deleteProductFromFile.setDisable(true);
+		
 		
 		this.deleteAllFromFile= new Button("Delete all products");
 		this.deleteAllFromFile.setFont(Font.font("Verdana", FontWeight.BOLD, 16));
-		if(!this.readFromFile)
-			this.deleteAllFromFile.setDisable(true);
+		
 		
 		this.showProfit= new Button("Show profit");
 		this.showProfit.setFont(Font.font("Verdana", FontWeight.BOLD, 16));
-		if(noProducts)
-			this.showProfit.setDisable(true);
 		
 		this.sendSMS= new Button("Send SMS");
 		this.sendSMS.setFont(Font.font("Verdana", FontWeight.BOLD, 16)); 
-		if(noProducts)
-			this.sendSMS.setDisable(true);
 		
 		this.showAllConfirmedCustomers= new Button("Show all confirmed customers");
 		this.showAllConfirmedCustomers.setFont(Font.font("Verdana", FontWeight.BOLD, 16));
@@ -224,6 +212,10 @@ public class View {
 		this.searchProductByCatalogNumberView.show();
 	}
 	
+	public void createUnAbleToSearchProductView() {
+		this.error.setText("Unable to search Product");
+	}
+	
 	public void createShowProductView(String pName, String pPriceForStore, String pPriceForCustomer, String cName, String cPhoneNumber,
 			String cIntrestedInSales) {
 		this.searchProductByCatalogNumberView.closeWindow();
@@ -250,9 +242,18 @@ public class View {
 	}
 	
 	public void createWindowToAllConfirmedCustomers(ArrayList<String> allConfirmedCustomers) {
+		if(allConfirmedCustomers==null) {
+			this.error.setText("No customers in the system");
+		}else {
 		this.allCustomersWithSMS.getAllCustomers(allConfirmedCustomers);
 		this.allCustomersWithSMS.show();
 		this.allCustomersWithSMS.showAllCustomers();
+		this.error.setText("");
+		}
+	}
+	
+	public void createWindowToUnableAllConfirmedCustomers() {
+		this.error.setText("Unable to show all Customers");
 	}
 	
 	public boolean checkAddProductDone() { //to add product	
@@ -324,21 +325,39 @@ public class View {
 	}
 	
 	public void updateWindowToUndo() {
-		this.error.setText("Last Product deleted");
+		this.error.setText("Undid Last Product");
+	}
+	
+	public void updateWindowToUnAbleUndo() {
+		this.error.setText("Unable to undo last Product");
 	}
 	
 	public void updateWindowToDeleteProductFromFile() {
 		this.error.setText("Product Deleted");
 	}
 	
+	public void updateWindowToUnAbleToDeleteProductFromFile() {
+		this.error.setText("Unable to Delete Product");
+	}
+
 	public void updateWindowToDeleteAllProductFromFile() {
 		this.error.setText("All Products Deleted");
 	}
 	
-	public void updateWindowToToSendSMS() {
+	public void updateWindowToUnableDeleteAllProductFromFile() {
+		this.error.setText("Unable to Delete All Products ");
+	}
+
+	
+	public void updateWindowToSendSMS() {
 		this.showAllConfirmedCustomers.setDisable(false);
 		this.error.setText("SMS Sent");
 	}
+	
+	public void updateWindowToUnableSendSMS() {
+		this.error.setText("Unable to Send SMS");
+	}
+
 	
 	public void setAllOptionsDisables() {
 		this.getAndShowProduct.setDisable(true);
@@ -364,6 +383,7 @@ public class View {
 	
 	public void closeShowAllConfirmedCustomersWindow() {
 		this.allCustomersWithSMS.close();
+		this.showAllConfirmedCustomers.setDisable(true);
 	}
 	
 	public void closeShowProductWindow() {
@@ -469,6 +489,21 @@ public class View {
 	public void addEventHandlerTodoneInshowAllConfirmedCustomersIsPressed(EventHandler<ActionEvent> doneInshowAllConfirmedCustomersIsPressed) {
 		this.allCustomersWithSMS.getDoneButton().setOnAction(doneInshowAllConfirmedCustomersIsPressed);
 	}
+
+
+
+
+
+	
+
+	
+
+	
+
+	
+
+
+	
 
 
 	

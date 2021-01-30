@@ -72,13 +72,14 @@ public class Model {
 	}
 	
 	public void load(ModelMemento lastModel) { 
-		if(lastModel==null) {
+		if(lastModel.getAllProducts().size()==0) {
 			updateSavingMethod(this.savingMethod);
+			allReceivingClients=new ArrayList<>();
 		}else {
 			this.allProducts=lastModel.getAllProducts();
-		}
-		if(allReceivingClients.size()>0)
 			this.allReceivingClients.remove(allReceivingClients.size()-1);
+		}
+		
 		//delete from file last product!!!!!
 	}
 	
@@ -187,6 +188,9 @@ public class Model {
 	public void addProduct(CareTaker lastStatus, Product p, String catalogNumber) {
 		lastStatus.save(this.save());
 		allProducts.put(catalogNumber, p);
+		if(p.getBoughtBy().intrestedInSales==true){
+			allReceivingClients.add(p.getBoughtBy().getName());
+		}
 		writeProductToFile(p,catalogNumber);
 	}
 
@@ -295,7 +299,16 @@ public class Model {
 
 
 	public ArrayList<String> getAllConfirmedCustomers() {
+		if(this.allReceivingClients.size()==0) 
+			return null;
 		return this.allReceivingClients;
+	}
+
+
+	public boolean checkIfAreProducts() {
+		if(this.allProducts.size()==0)
+			return false;
+		return true;
 	}
 
 }

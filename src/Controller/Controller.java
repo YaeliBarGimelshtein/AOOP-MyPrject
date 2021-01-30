@@ -76,7 +76,11 @@ public class Controller {
 		EventHandler<ActionEvent> showProductIsPressed= new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				view.createSearchProductView();
+				if(commands.checkIfAreProducts()==false) {
+					view.createUnAbleToSearchProductView();
+				}else {
+					view.createSearchProductView();
+				}
 			}
 		};
 		view.addEventHandlerToShowProduct(showProductIsPressed);
@@ -184,8 +188,12 @@ public class Controller {
 		EventHandler<ActionEvent> undoLastAddedProductIsPressed= new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				commands.undo();
-				view.updateWindowToUndo();
+				if(commands.checkIfAreProducts()==true) {
+					commands.undo();
+					view.updateWindowToUndo();
+				}else {
+					view.updateWindowToUnAbleUndo();
+				}
 			}
 		};
 		view.addEventHandlerToUndoLastAddedProduct(undoLastAddedProductIsPressed);
@@ -201,8 +209,13 @@ public class Controller {
 		EventHandler<ActionEvent> deleteProductFromFileIsPressed= new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				//model.deleteFromFile();
-				view.updateWindowToDeleteProductFromFile();
+				if(commands.checkIfAreProducts()==true) {
+					//model.deleteFromFile();
+					view.updateWindowToDeleteProductFromFile();
+				}else {
+					view.updateWindowToUnAbleToDeleteProductFromFile();
+				}
+				
 			}
 		};
 		view.addEventHandlerToDeleteProductFromFile(deleteProductFromFileIsPressed);
@@ -219,8 +232,13 @@ public class Controller {
 		EventHandler<ActionEvent> deleteAllProductFromFileIsPressed= new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				//model.deleteFromFile();
-				view.updateWindowToDeleteAllProductFromFile();
+				if(commands.checkIfAreProducts()==true) {
+					//model.deleteFromFile();
+					view.updateWindowToDeleteAllProductFromFile();
+				}else {
+					view.updateWindowToUnableDeleteAllProductFromFile();
+				}
+				
 			}
 		};
 		view.addEventHandlerToDeleteAllProductFromFile(deleteAllProductFromFileIsPressed);
@@ -237,8 +255,13 @@ public class Controller {
 		EventHandler<ActionEvent> sendSMSIsPressed= new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				commands.sendSMS();
-				view.updateWindowToToSendSMS();
+				if(commands.checkIfAreProducts()==true) {
+					commands.sendSMS();
+					view.updateWindowToSendSMS();
+				}else {
+					view.updateWindowToUnableSendSMS();
+				}
+				
 			}
 		};
 		view.addEventHandlerToSendSMS(sendSMSIsPressed);
@@ -254,8 +277,11 @@ public class Controller {
 		EventHandler<ActionEvent> showAllConfirmedCustomers= new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				view.createWindowToAllConfirmedCustomers(commands.getAllConfirmedCustomers());
-				
+				if(commands.checkIfAreProducts()==true) {
+					view.createWindowToAllConfirmedCustomers(commands.getAllConfirmedCustomers());
+				}else {
+					view.createWindowToUnableAllConfirmedCustomers();
+				}
 			}
 		};
 		view.addEventHandlerToshowAllConfirmedCustomers(showAllConfirmedCustomers);
