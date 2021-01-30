@@ -47,6 +47,23 @@ public class Product {
 	public Customer getBoughtBy() {
 		return boughtBy;
 	}
+
+
+	public boolean equals(Product p2) {
+		if(!(boughtBy.equals(p2.boughtBy))){
+			return false;
+		}
+		if (!name.equals(p2.name))
+			return false;
+		if (priceForCustomer != p2.priceForCustomer)
+			return false;
+		if (priceForStore != p2.priceForStore)
+			return false;
+		if (profit != p2.profit)
+			return false;
+		
+		return true;
+	}
 	
 	
 	

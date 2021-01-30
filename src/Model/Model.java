@@ -7,6 +7,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.RandomAccessFile;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Iterator;
@@ -21,13 +22,12 @@ import Model.Memento.ModelMemento;
 
 
 public class Model {
-	//fir singelton
+	//frr singelton
 	private static Model model;
 	//for file
 	private boolean readFromFile;
 	private File productsFile;
 	private ObjectOutputStream oOut;
-	private ObjectInputStream oIn;
 	//for data
 	private TreeMap<String, Product> allProducts;
 	private ArrayList<String> allReceivingClients;
@@ -46,7 +46,6 @@ public class Model {
 		//read from file if possible
 		this.readFromFile = readInforamtionFromFile();
 		this.allReceivingClients= new ArrayList<>();
-		// to be able to write
 		try {
 			if (readFromFile) {
 				oOut = new ObjectOutputStream(new FileOutputStream(productsFile, readFromFile)) {
@@ -64,6 +63,7 @@ public class Model {
 			
 		}
 	}
+	
 	
 	public ModelMemento save() {
 		TreeMap<String, Product> copy= new TreeMap<>();
@@ -93,35 +93,26 @@ public class Model {
 		try {
 			productsFile = new File("products.txt");
 //			if (productsFile.exists()) {
-//				Iterator<String> iterator = iterator();
-//				this.allProducts= new TreeMap<>();			
-//				if(iterator.hasNext()) {
-//					int orderToSaveProducts=Integer.parseInt(iterator.next());
-//				}
+//				Iterator<Product> iterator=iterator();
+//				Product savingMethodP= iterator.next();
+//				updateSavingMethod(savingMethodP.getPriceForStore());
 //				while(iterator.hasNext()) {
-//					String catalogAndProduct= iterator.next();
-//					String[] catalogAndProductArr= catalogAndProduct.split("&");
-//					
-//					//addProduct(product,catalogAndProductArr[0]);
+//					Product catalog= iterator.next();
+//					Product p= iterator.next();
+//					allProducts.put(catalog.getName(), p);
 //				}
 //				
-				//this is bad. needs to be with iterator
-				//oIn = new ObjectInputStream(new FileInputStream(productsFile));
-				//int orderToSaveProducts= oIn.readInt();
-				//updateSavingMethod(orderToSaveProducts);
-				//while (oIn.available() != 0) {
-				//	String catalogNumber= oIn.readUTF();
-				//	Product product = (Product) oIn.readObject();
-					
-				//}
-//				return true;
 //			}
+//			return true;
 		} catch (Exception e) {
 			
 		}
 		return false;
 	}
 	
+	
+
+
 	public boolean getReadFromFile() {
 		return this.readFromFile;
 	}
@@ -260,15 +251,20 @@ public class Model {
 	
 	//iterator:
 	private class ProductIterator implements Iterator<Product> {
-		private long current; // the index of element that 'next' will return
-		//private int last = -1; // the index of the element to be removed
+		private ObjectInputStream oIn;
+		private RandomAccessFile raf;
+		private long fileLenght;
+		private long curPosition;
+		private long beforeCurPosition;
 		
 		public ProductIterator() {
 			try {
-				oIn = new ObjectInputStream(new FileInputStream(productsFile));
-				current= 0;
+				resetInputStream();
+				fileLenght=oIn.available();
+				curPosition=0;
+				beforeCurPosition=0;
 			} catch (IOException e) {
-
+				
 			}
 			
 		}
@@ -276,7 +272,9 @@ public class Model {
 		@Override
 		public boolean hasNext() {
 			try {
-				return current < oIn.available();
+				if(oIn.available()>0)
+					return true;
+				return false;
 			} catch (IOException e) {
 			
 			}
@@ -288,8 +286,9 @@ public class Model {
 			try {
 				if (!hasNext())
 					throw new NoSuchElementException();
+				this.beforeCurPosition=fileLenght-oIn.available();
 				Product product = (Product) oIn.readObject();
-				//cur+sizeof
+				this.curPosition=fileLenght-oIn.available();
 				return product;
 			} catch (IOException e) {
 				
@@ -301,7 +300,27 @@ public class Model {
 
 		@Override
 		public void remove() {
+			try {
+				raf = new RandomAccessFile("productsFile", "rw");
+				raf.seek(curPosition);
+				byte[] temp = new byte[(int) (raf.length() - raf.getFilePointer())];
+				raf.read(temp); //has the rest of the file without the product
+				raf.setLength(beforeCurPosition); //deletes the unwanted product
+				raf.write(temp); ///writes the rest back
+				
+			} catch (FileNotFoundException e) {
+				
+			} catch (IOException e) {
+				
+			}
+		}
 		
+		private void resetInputStream() {
+			try {
+				oIn = new ObjectInputStream(new FileInputStream(productsFile));
+			} catch (IOException e) {
+
+			}
 		}
 
 	}

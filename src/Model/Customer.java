@@ -35,5 +35,17 @@ public class Customer implements Observer {
 		return this.name;
 	}
 	
+	public boolean equals(Customer c2) {
+		if(!(name.equals(c2.name))) {
+			return false;
+		}
+		if(!(phoneNumber.equals(c2.phoneNumber))) {
+			return false;
+		}
+		if((intrestedInSales==true && c2.intrestedInSales==false) || (intrestedInSales==false && c2.intrestedInSales==true) ) {
+			return false;
+		}
+		return true;
+	}
 	
 }

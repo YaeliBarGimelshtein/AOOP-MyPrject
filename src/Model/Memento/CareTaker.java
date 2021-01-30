@@ -23,4 +23,5 @@ public class CareTaker {
 			return null;
 		return this.stack.pop();
 	}
+	
 }

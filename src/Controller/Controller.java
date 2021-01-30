@@ -29,11 +29,9 @@ public class Controller {
 				}
 			};
 			view.addChangeListenerToGames(savingMethodPicked);
+		}else {
+			commands.setFirstMementoAfterReadingFromFile();
 		}
-		
-		
-		
-		
 		
 		
 		//adding product
@@ -215,7 +213,6 @@ public class Controller {
 				}else {
 					view.updateWindowToUnAbleToDeleteProductFromFile();
 				}
-				
 			}
 		};
 		view.addEventHandlerToDeleteProductFromFile(deleteProductFromFileIsPressed);

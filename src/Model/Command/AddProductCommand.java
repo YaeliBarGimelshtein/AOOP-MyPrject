@@ -3,6 +3,7 @@ package Model.Command;
 import Model.Model;
 import Model.Product;
 import Model.Memento.CareTaker;
+import Model.Memento.ModelMemento;
 
 public class AddProductCommand {
 	private Model model;
