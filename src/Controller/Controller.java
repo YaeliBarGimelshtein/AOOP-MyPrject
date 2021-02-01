@@ -77,6 +77,7 @@ public class Controller {
 				if(commands.checkIfAreProducts()==false) {
 					view.createUnAbleToSearchProductView();
 				}else {
+					view.setIfShowProductTrue();
 					view.createSearchProductView();
 				}
 			}
@@ -84,6 +85,8 @@ public class Controller {
 		view.addEventHandlerToShowProduct(showProductIsPressed);
 		
 		
+		
+		//search product window
 		EventHandler<ActionEvent> doneInSearchProductIsPressed= new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
@@ -91,12 +94,16 @@ public class Controller {
 				
 				if(finished) {
 					boolean found=commands.findProduct(view.getCatalogNumberToFind());
-					if(found)
+					boolean isForShowProduct=view.getIfShowProduct();
+					if(found && isForShowProduct) {
 						view.createShowProductView( commands.getFoundName(), commands.getFoundPriceForStore() ,
 								commands.getFoundPriceForCustomer(), commands.getFoundCusName(), commands.getFoundCusPhone(), 
 								commands.getFoundCusIntrestedInSales());
-					else {
+					}else if((!found) && isForShowProduct) {
 						view.closeShowNotFoundAndBackToMenu();
+					}else if(!isForShowProduct) { //for deleting product
+						commands.deleteProduct(view.getCatalogNumberToFind());
+						view.updateWindowToDeleteProductFromFile();
 					}
 				}
 			}
@@ -208,8 +215,8 @@ public class Controller {
 			@Override
 			public void handle(ActionEvent event) {
 				if(commands.checkIfAreProducts()==true) {
-					//model.deleteFromFile();
-					view.updateWindowToDeleteProductFromFile();
+					view.setIfShowProductFalse();
+					view.createSearchProductView();
 				}else {
 					view.updateWindowToUnAbleToDeleteProductFromFile();
 				}
@@ -230,7 +237,7 @@ public class Controller {
 			@Override
 			public void handle(ActionEvent event) {
 				if(commands.checkIfAreProducts()==true) {
-					//model.deleteFromFile();
+					commands.deleteAllProducts();
 					view.updateWindowToDeleteAllProductFromFile();
 				}else {
 					view.updateWindowToUnableDeleteAllProductFromFile();

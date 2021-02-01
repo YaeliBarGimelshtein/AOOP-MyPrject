@@ -44,6 +44,7 @@ public class Model {
 	
 	private Model() {
 		//read from file if possible
+		this.productsFile = new File("products.txt");
 		this.readFromFile = readInforamtionFromFile();
 		this.allReceivingClients= new ArrayList<>();
 		try {
@@ -91,7 +92,6 @@ public class Model {
 	
 	public boolean readInforamtionFromFile() {
 		try {
-			productsFile = new File("products.txt");
 //			if (productsFile.exists()) {
 //				Iterator<Product> iterator=iterator();
 //				Product savingMethodP= iterator.next();
@@ -101,7 +101,6 @@ public class Model {
 //					Product p= iterator.next();
 //					allProducts.put(catalog.getName(), p);
 //				}
-//				
 //			}
 //			return true;
 		} catch (Exception e) {
@@ -249,6 +248,24 @@ public class Model {
 	}
 	
 	
+	public void deleteProduct(String catalogNumber) {
+		Iterator<Product> iterator=iterator();
+		do {
+			iterator.next(); 
+		} while (iterator.hasNext() && !(iterator.next().getName().equals(catalogNumber)));
+		iterator.remove();
+		readInforamtionFromFile();
+	}
+	
+	public void deleteAll() {
+		Iterator<Product> iterator=iterator();
+		while(iterator.hasNext()) {
+			iterator.remove();
+		}
+		updateSavingMethod(this.savingMethod);
+	}
+	
+	
 	//iterator:
 	private class ProductIterator implements Iterator<Product> {
 		private ObjectInputStream oIn;
@@ -322,10 +339,11 @@ public class Model {
 
 			}
 		}
-
 	}
 
 
 	
 
+
+	
 }

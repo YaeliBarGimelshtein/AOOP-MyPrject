@@ -19,6 +19,8 @@ public class AllModelCommands implements ModelCommands{
 	private getAllConfirmedCustomers allConfirmed;
 	private checkIfAreProductsCommand areProducts;
 	private saveForMementoCommand saveFirstMemento;
+	private deleteProductCommand deleteProduct;
+	private deleteAllProducts deleteAll;
 
 	public AllModelCommands(Model model) {
 		this.addProduct= new AddProductCommand(model);
@@ -32,7 +34,8 @@ public class AllModelCommands implements ModelCommands{
 		this.allConfirmed= new getAllConfirmedCustomers(model);
 		this.areProducts=new checkIfAreProductsCommand(model);
 		this.saveFirstMemento= new saveForMementoCommand(model);
-		
+		this.deleteProduct= new deleteProductCommand(model);
+		this.deleteAll= new deleteAllProducts(model);
 	}
 
 	@Override
@@ -122,5 +125,15 @@ public class AllModelCommands implements ModelCommands{
 
 	public void resetAllConfirmedCustomers() {
 		this.allConfirmed.resetAllConfirmed();
+	}
+
+	@Override
+	public void deleteProduct(String catalogNumber) {
+		this.deleteProduct.deleteProduct(catalogNumber);
+	}
+
+	@Override
+	public void deleteAllProducts() {
+		this.deleteAll.deleteAll();
 	}
 }

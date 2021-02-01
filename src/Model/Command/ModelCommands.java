@@ -15,12 +15,14 @@ public interface ModelCommands {
 	void sendSMS();
 	ArrayList<String> getAllConfirmedCustomers();
 	boolean checkIfAreProducts();
+	void deleteProduct(String catalogNumber);
+	void deleteAllProducts();
 //	void getProduct();
 
-//	void deleteLastProduct();
+
 //	boolean readDataFromFile();
-//	void deleteProductFromFile();
-//	void deleteAllFromFile();
+	
+	
 	
 
 

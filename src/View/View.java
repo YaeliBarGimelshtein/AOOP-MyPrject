@@ -34,6 +34,7 @@ public class View {
 	private Stage stage;
 	private boolean readFromFile;
 	private boolean noProducts;
+	private boolean searchToShow;
 	//buttons
 	private Button addProduct;
 	private Button getAndShowProduct;
@@ -404,6 +405,19 @@ public class View {
 		this.stage.show();
 	}
 	
+	public boolean getIfShowProduct() {
+		return this.searchToShow;
+	}
+	
+	public void setIfShowProductTrue() {
+		this.searchToShow=true;
+	}
+
+	public void setIfShowProductFalse() {
+		this.searchToShow=false;
+	}
+
+	
 	//connection to controller
 
 	public void addChangeListenerToGames(ChangeListener<Toggle> savingMethodPicked) {
@@ -489,6 +503,12 @@ public class View {
 	public void addEventHandlerTodoneInshowAllConfirmedCustomersIsPressed(EventHandler<ActionEvent> doneInshowAllConfirmedCustomersIsPressed) {
 		this.allCustomersWithSMS.getDoneButton().setOnAction(doneInshowAllConfirmedCustomersIsPressed);
 	}
+
+
+	
+
+	
+
 
 
 
