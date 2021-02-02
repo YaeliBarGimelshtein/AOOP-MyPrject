@@ -21,6 +21,7 @@ public class AllModelCommands implements ModelCommands{
 	private saveForMementoCommand saveFirstMemento;
 	private deleteProductCommand deleteProduct;
 	private deleteAllProducts deleteAll;
+	private closeOutputCommand closeOutput;
 
 	public AllModelCommands(Model model) {
 		this.addProduct= new AddProductCommand(model);
@@ -36,6 +37,7 @@ public class AllModelCommands implements ModelCommands{
 		this.saveFirstMemento= new saveForMementoCommand(model);
 		this.deleteProduct= new deleteProductCommand(model);
 		this.deleteAll= new deleteAllProducts(model);
+		this.closeOutput= new closeOutputCommand(model);
 	}
 
 	@Override
@@ -135,5 +137,10 @@ public class AllModelCommands implements ModelCommands{
 	@Override
 	public void deleteAllProducts() {
 		this.deleteAll.deleteAll(this.lastStatus);
+	}
+
+	@Override
+	public void close() {
+		this.closeOutput.close();
 	}
 }

@@ -22,6 +22,10 @@ import Model.Memento.ModelMemento;
 
 
 public class Model {
+	public static final int ASCENDING = 0;
+	public static final int DESCENDING = 1;
+	public static final int BY_INPUT_ORDER = 2; 
+	public static final String F_NAME = "products.txt";
 	//frr singelton
 	private static Model model;
 	//for file
@@ -43,10 +47,13 @@ public class Model {
 	
 	
 	private Model() {
-		//read from file if possible
-		this.productsFile = new File("products.txt");
+		this.productsFile = new File(F_NAME);
 		this.readFromFile = readInforamtionFromFile();
 		this.allReceivingClients= new ArrayList<>();
+		resetOutputStream();
+	}
+	
+	public void resetOutputStream() {
 		try {
 			if (readFromFile) {
 				oOut = new ObjectOutputStream(new FileOutputStream(productsFile, readFromFile)) {
@@ -78,8 +85,12 @@ public class Model {
 		}else {
 			this.allProducts=lastModel.getAllProducts();
 		}
-		
-		//delete from file last product!!!!!
+		//removing from file
+		Iterator<Product> iterator= iterator();
+		while(iterator.hasNext()) {
+			iterator.next();
+		}
+		iterator.remove();
 	}
 	
 	// Notify
@@ -92,25 +103,23 @@ public class Model {
 	
 	public boolean readInforamtionFromFile() {
 		try {
-//			if (productsFile.exists()) {
-//				Iterator<Product> iterator=iterator();
-//				Product savingMethodP= iterator.next();
-//				updateSavingMethod(savingMethodP.getPriceForStore());
-//				while(iterator.hasNext()) {
-//					Product catalog= iterator.next();
-//					Product p= iterator.next();
-//					allProducts.put(catalog.getName(), p);
-//				}
-//			}
-//			return true;
+			if (productsFile.exists()) {
+				Iterator<Product> iterator=iterator();
+				Product savingMethodP= iterator.next();
+				updateSavingMethod(savingMethodP.getPriceForStore());
+				while(iterator.hasNext()) {
+					Product catalog= iterator.next();
+					Product p= iterator.next();
+					allProducts.put(catalog.getName(), p);
+				}
+			return true;
+			}
 		} catch (Exception e) {
 			
 		}
 		return false;
 	}
 	
-	
-
 
 	public boolean getReadFromFile() {
 		return this.readFromFile;
@@ -123,28 +132,28 @@ public class Model {
 	public void updateSavingMethod(int orderToSaveProducts) {
 		this.savingMethod=orderToSaveProducts;
 		switch (orderToSaveProducts) {
-		case 0:
-			this.allProducts= new TreeMap<>(new Comparator<String>() { //Ascending
+		case ASCENDING:
+			this.allProducts= new TreeMap<>(new Comparator<String>() { 
 				@Override
-				public int compare(String o1, String o2) {
+				public int compare(String o1, String o2) { 
 					return o1.compareTo(o2);
 				}
 			});
 			
 			break;
-		case 1:
+		case DESCENDING:
 			this.allProducts=new TreeMap<>(new Comparator<String>() {
 				@Override
-				public int compare(String o1, String o2) { //Descending
+				public int compare(String o1, String o2) { 
 					return -(o1.compareTo(o2));
 				}
 			});
 			
 			break;
-		case 2:
+		case BY_INPUT_ORDER:
 			this.allProducts=new TreeMap<>(new Comparator<String>() {
 				@Override
-				public int compare(String o1, String o2) { //By input order
+				public int compare(String o1, String o2) { 
 					return 1;
 				}
 			});
@@ -247,6 +256,15 @@ public class Model {
 		this.allReceivingClients=new ArrayList<>();
 	}
 	
+	public void close() {
+		try {
+			this.oOut.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 	
 	public void deleteProduct(CareTaker lastStatus,String catalogNumber) {
 		lastStatus.save(this.save());
@@ -264,6 +282,7 @@ public class Model {
 		while(iterator.hasNext()) {
 			iterator.remove();
 		}
+		
 		updateSavingMethod(this.savingMethod);
 	}
 	
@@ -285,7 +304,6 @@ public class Model {
 			} catch (IOException e) {
 				
 			}
-			
 		}
 
 		@Override
@@ -303,8 +321,10 @@ public class Model {
 		@Override
 		public Product next() {
 			try {
-				if (!hasNext())
+				if (!hasNext()) {
+					oIn.close();
 					throw new NoSuchElementException();
+				}
 				this.beforeCurPosition=fileLenght-oIn.available();
 				Product product = (Product) oIn.readObject();
 				this.curPosition=fileLenght-oIn.available();
@@ -320,13 +340,12 @@ public class Model {
 		@Override
 		public void remove() {
 			try {
-				raf = new RandomAccessFile("productsFile", "rw");
+				raf = new RandomAccessFile(productsFile, "rw");
 				raf.seek(curPosition);
 				byte[] temp = new byte[(int) (raf.length() - raf.getFilePointer())];
 				raf.read(temp); //has the rest of the file without the product
 				raf.setLength(beforeCurPosition); //deletes the unwanted product
 				raf.write(temp); ///writes the rest back
-				
 			} catch (FileNotFoundException e) {
 				
 			} catch (IOException e) {
@@ -334,18 +353,13 @@ public class Model {
 			}
 		}
 		
+		
 		private void resetInputStream() {
 			try {
 				oIn = new ObjectInputStream(new FileInputStream(productsFile));
 			} catch (IOException e) {
 
 			}
-		}
-	}
-
-
-	
-
-
-	
+		}	
+	}	
 }

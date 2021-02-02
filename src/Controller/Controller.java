@@ -153,6 +153,7 @@ public class Controller {
 		EventHandler<ActionEvent> quitIsPressed= new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
+				commands.close();
 				Platform.exit();
 			    System.exit(0);
 			}

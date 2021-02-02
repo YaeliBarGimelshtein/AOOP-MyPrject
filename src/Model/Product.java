@@ -1,6 +1,9 @@
 package Model;
 
-public class Product {
+import java.io.Serializable;
+
+public class Product implements Serializable {
+	private static final long serialVersionUID = 1L;
 	private String name;
 	private int priceForStore;
 	private int priceForCustomer;
@@ -64,8 +67,4 @@ public class Product {
 		
 		return true;
 	}
-	
-	
-	
-	
 }

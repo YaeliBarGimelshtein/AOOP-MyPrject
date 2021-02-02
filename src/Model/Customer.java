@@ -1,8 +1,11 @@
 package Model;
 
+import java.io.Serializable;
+
 import Model.Observer.Observer;
 
-public class Customer implements Observer {
+public class Customer implements Observer,  Serializable  {
+	private static final long serialVersionUID = 1L;
 	String name;
 	String phoneNumber;
 	boolean intrestedInSales;
