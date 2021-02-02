@@ -17,10 +17,10 @@ public interface ModelCommands {
 	boolean checkIfAreProducts();
 	void deleteProduct(String catalogNumber);
 	void deleteAllProducts();
-//	void getProduct();
 
 
-//	boolean readDataFromFile();
+
+
 	
 	
 	

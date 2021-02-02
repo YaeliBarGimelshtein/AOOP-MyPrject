@@ -129,11 +129,11 @@ public class AllModelCommands implements ModelCommands{
 
 	@Override
 	public void deleteProduct(String catalogNumber) {
-		this.deleteProduct.deleteProduct(catalogNumber);
+		this.deleteProduct.deleteProduct(this.lastStatus,catalogNumber);
 	}
 
 	@Override
 	public void deleteAllProducts() {
-		this.deleteAll.deleteAll();
+		this.deleteAll.deleteAll(this.lastStatus);
 	}
 }

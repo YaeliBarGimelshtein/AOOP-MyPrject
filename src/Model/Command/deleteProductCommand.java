@@ -1,6 +1,7 @@
 package Model.Command;
 
 import Model.Model;
+import Model.Memento.CareTaker;
 
 public class deleteProductCommand {
 	private Model model;
@@ -9,7 +10,7 @@ public class deleteProductCommand {
 		this.model = model;
 	}
 	
-	public void deleteProduct(String catalogNumber) {
-		this.model.deleteProduct(catalogNumber);
+	public void deleteProduct(CareTaker lastStatus,String catalogNumber) {
+		this.model.deleteProduct(lastStatus,catalogNumber);
 	}
 }

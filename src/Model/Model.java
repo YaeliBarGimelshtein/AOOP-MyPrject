@@ -248,7 +248,8 @@ public class Model {
 	}
 	
 	
-	public void deleteProduct(String catalogNumber) {
+	public void deleteProduct(CareTaker lastStatus,String catalogNumber) {
+		lastStatus.save(this.save());
 		Iterator<Product> iterator=iterator();
 		do {
 			iterator.next(); 
@@ -257,7 +258,8 @@ public class Model {
 		readInforamtionFromFile();
 	}
 	
-	public void deleteAll() {
+	public void deleteAll(CareTaker lastStatus) {
+		lastStatus.save(this.save());
 		Iterator<Product> iterator=iterator();
 		while(iterator.hasNext()) {
 			iterator.remove();
