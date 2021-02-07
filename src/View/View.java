@@ -122,7 +122,7 @@ public class View {
 		this.error= new Label("");
 		this.error.setFont(Font.font("Verdana", FontWeight.BOLD, 16));
 		this.error.setTextFill(Color.RED);
-		if(readFromFile==false)
+		if(readFromFile==true)
 			this.error.setText("All data Read from file");
 		
 		//layout

@@ -305,17 +305,16 @@ public class Model {
 	//iterator:
 	private class ProductIterator implements Iterator<Product> {
 		private ObjectInputStream oIn;
-		//private DataInputStream dIn;
 		private FileInputStream fIn;
 		private RandomAccessFile raf;
-		private long fileLenght;
+		private long fileLength ;
 		private long curPosition;
 		private long beforeCurPosition;
 		private int counter;
 		
 		public ProductIterator() {
 			resetInputStream();
-			this.fileLenght=productsFile.length();
+			this.fileLength=productsFile.length();
 			this.curPosition=0;
 			this.beforeCurPosition=0;
 			this.counter=0;
@@ -342,10 +341,10 @@ public class Model {
 				}
 				counter++;
 				if(counter%2==0) {
-					this.beforeCurPosition=fileLenght-fIn.available();
+					this.beforeCurPosition=fileLength-fIn.available();
 				}
 				Product product = (Product) oIn.readObject();
-				this.curPosition=fileLenght-fIn.available();
+				this.curPosition=fileLength-fIn.available();
 				return product;
 			} catch (IOException e) {
 				
@@ -358,9 +357,8 @@ public class Model {
 		@Override
 		public void remove() {
 			try {
-				raf = new RandomAccessFile(productsFile, "rw");
 				raf.seek(curPosition);
-				if(curPosition==fileLenght) {
+				if(curPosition==fileLength) {
 					raf.setLength(beforeCurPosition); //deletes the unwanted product
 				}else {
 					byte[] temp = new byte[(int) (raf.length() - raf.getFilePointer())];
@@ -368,7 +366,7 @@ public class Model {
 					raf.setLength(beforeCurPosition); //deletes the unwanted product
 					raf.seek(beforeCurPosition);
 					raf.write(temp); ///writes the rest back
-					this.fileLenght= productsFile.length();
+					this.fileLength= productsFile.length();
 					this.curPosition=this.beforeCurPosition;
 				}
 			} catch (FileNotFoundException e) {
@@ -383,7 +381,7 @@ public class Model {
 			try {
 				fIn=new FileInputStream(productsFile);
 				oIn = new ObjectInputStream(fIn);
-				//dIn= new DataInputStream(new FileInputStream(productsFile));
+				raf = new RandomAccessFile(productsFile, "rw");
 			} catch (IOException e) {
 
 			}
