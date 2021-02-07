@@ -28,7 +28,7 @@ public class Controller {
 					commands.updateSavingMethod(view.getOrderToSaveProducts());
 				}
 			};
-			view.addChangeListenerToGames(savingMethodPicked);
+			view.addChangeListenerTosavingMethodPicked(savingMethodPicked);
 		}else {
 			commands.setFirstMementoAfterReadingFromFile();
 		}
@@ -101,7 +101,9 @@ public class Controller {
 								commands.getFoundCusIntrestedInSales());
 					}else if((!found) && isForShowProduct) {
 						view.closeShowNotFoundAndBackToMenu();
-					}else if(!isForShowProduct) { //for deleting product
+					}else if ((!found) && (!isForShowProduct)) {
+						view.updateWindowToUnAbleToDeleteProductFromFile();
+					}else if(found &&!isForShowProduct) { //for deleting product
 						commands.deleteProduct(view.getCatalogNumberToFind());
 						view.updateWindowToDeleteProductFromFile();
 					}

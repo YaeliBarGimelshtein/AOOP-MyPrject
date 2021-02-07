@@ -62,16 +62,16 @@ public class showChosenProductView {
 		this.allDetails = new VBox();
 		this.allDetails.getChildren().addAll(this.headline, this.pName,this.pPriceForStore,this.pPriceForCustomer,this.cName,this.cPhoneNumber,this.cIntrestedInSales,done);
 		this.allDetails.setSpacing(15);
-		this.allDetails.setAlignment(Pos.CENTER);
+		this.allDetails.setAlignment(Pos.CENTER_LEFT);
 		
-		VBox.setMargin(this.headline, new Insets(0, 0, 50, 0));
-//		VBox.setMargin(this.pName, new Insets(20, 0, 0, 20));
-//		VBox.setMargin(this.pPriceForStore, new Insets(0, 0, 0, 20));
-//		VBox.setMargin(this.pPriceForCustomer, new Insets(0, 0, 0, 20));
-//		VBox.setMargin(this.cName, new Insets(0, 0, 0, 20));
-//		VBox.setMargin(this.cPhoneNumber, new Insets(0, 0, 0, 20));
-//		VBox.setMargin(this.cIntrestedInSales, new Insets(0, 0, 0, 20));
-		VBox.setMargin(done, new Insets(50, 0, 0, 0));
+		VBox.setMargin(this.headline, new Insets(0, 0, 50, 500));
+		VBox.setMargin(this.pName, new Insets(20, 0, 0, 20));
+		VBox.setMargin(this.pPriceForStore, new Insets(0, 0, 0, 20));
+		VBox.setMargin(this.pPriceForCustomer, new Insets(0, 0, 0, 20));
+		VBox.setMargin(this.cName, new Insets(0, 0, 0, 20));
+		VBox.setMargin(this.cPhoneNumber, new Insets(0, 0, 0, 20));
+		VBox.setMargin(this.cIntrestedInSales, new Insets(0, 0, 0, 20));
+		VBox.setMargin(done, new Insets(50, 0, 0, 550));
 		
 	
 		this.screen=new StackPane();

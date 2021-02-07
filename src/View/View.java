@@ -33,7 +33,6 @@ public class View {
 	
 	private Stage stage;
 	private boolean readFromFile;
-	private boolean noProducts;
 	private boolean searchToShow;
 	//buttons
 	private Button addProduct;
@@ -69,10 +68,6 @@ public class View {
 	public View(Stage primaryStage , boolean readFromFile) {
 		this.stage=primaryStage;
 		this.readFromFile=readFromFile;
-		if(!readFromFile)
-			noProducts=true;
-		else
-			noProducts=false;
 		this.addProductView=new addProdectView(new Stage());
 		this.optionsView=new saveProductsOptionsView(new Stage());
 		this.searchProductByCatalogNumberView= new searchProductView(new Stage());
@@ -94,7 +89,7 @@ public class View {
 		this.showAllProducts= new Button("Show all products");
 		this.showAllProducts.setFont(Font.font("Verdana", FontWeight.BOLD, 16));
 		
-		this.undoLastAddedProduct= new Button("Undo last added product");
+		this.undoLastAddedProduct= new Button("Undo last operation");
 		this.undoLastAddedProduct.setFont(Font.font("Verdana", FontWeight.BOLD, 16));
 		
 		this.deleteProductFromFile= new Button("Delete product");
@@ -127,6 +122,8 @@ public class View {
 		this.error= new Label("");
 		this.error.setFont(Font.font("Verdana", FontWeight.BOLD, 16));
 		this.error.setTextFill(Color.RED);
+		if(readFromFile==false)
+			this.error.setText("All data Read from file");
 		
 		//layout
 		this.firstRow=new HBox();
@@ -137,7 +134,7 @@ public class View {
 		this.secondRow=new HBox();
 		this.secondRow.getChildren().addAll(undoLastAddedProduct,deleteProductFromFile,deleteAllFromFile);
 		this.secondRow.setAlignment(Pos.CENTER);
-		this.secondRow.setSpacing(15);
+		this.secondRow.setSpacing(37);
 		
 		this.thirdRow=new HBox();
 		this.thirdRow.getChildren().addAll(showProfit,sendSMS,showAllConfirmedCustomers);
@@ -173,7 +170,6 @@ public class View {
 			this.optionsView.show();
 		}
 		else {
-			this.noProducts=false;
 			createMenuView();
 		}
 	}
@@ -310,16 +306,8 @@ public class View {
 	public void closeAddProductWindow(boolean isException) { //to add product
 		this.addProductView.closeWindow();
 		if(!isException) {
-			this.noProducts=false;
-			setAllOptionsables();
 			this.error.setText("Product Added");
-		}else if (isException && this.noProducts) {
-			this.noProducts=true;
-			setAllOptionsDisables();
-			this.error.setText("Price cannot include characters, digits only. Product NOT added");
-		}else if (isException && this.noProducts==false) {
-			this.noProducts=false;
-			setAllOptionsDisables();
+		}else {
 			this.error.setText("Price cannot include characters, digits only. Product NOT added");
 		}
 		this.stage.show();
@@ -334,11 +322,15 @@ public class View {
 	}
 	
 	public void updateWindowToDeleteProductFromFile() {
+		this.searchProductByCatalogNumberView.closeWindow();
 		this.error.setText("Product Deleted");
+		this.stage.show();
 	}
 	
 	public void updateWindowToUnAbleToDeleteProductFromFile() {
+		this.searchProductByCatalogNumberView.closeWindow();
 		this.error.setText("Unable to Delete Product");
+		this.stage.show();
 	}
 
 	public void updateWindowToDeleteAllProductFromFile() {
@@ -357,29 +349,6 @@ public class View {
 	
 	public void updateWindowToUnableSendSMS() {
 		this.error.setText("Unable to Send SMS");
-	}
-
-	
-	public void setAllOptionsDisables() {
-		this.getAndShowProduct.setDisable(true);
-		this.showAllProducts.setDisable(true);
-		this.undoLastAddedProduct.setDisable(true);
-		this.deleteProductFromFile.setDisable(true);
-		this.deleteAllFromFile.setDisable(true);
-		this.showProfit.setDisable(true);
-		this.sendSMS.setDisable(true);
-		this.showAllConfirmedCustomers.setDisable(true);
-	}
-	
-	public void setAllOptionsables() {
-		this.getAndShowProduct.setDisable(false);
-		this.showAllProducts.setDisable(false);
-		this.undoLastAddedProduct.setDisable(false);
-		this.deleteProductFromFile.setDisable(false);
-		this.deleteAllFromFile.setDisable(false);
-		this.showProfit.setDisable(false);
-		this.sendSMS.setDisable(false);
-		this.showAllConfirmedCustomers.setDisable(true);
 	}
 	
 	public void closeShowAllConfirmedCustomersWindow() {
@@ -420,7 +389,7 @@ public class View {
 	
 	//connection to controller
 
-	public void addChangeListenerToGames(ChangeListener<Toggle> savingMethodPicked) {
+	public void addChangeListenerTosavingMethodPicked(ChangeListener<Toggle> savingMethodPicked) {
 		this.optionsView.getGroup().selectedToggleProperty().addListener(savingMethodPicked);
 	}
 
@@ -503,6 +472,8 @@ public class View {
 	public void addEventHandlerTodoneInshowAllConfirmedCustomersIsPressed(EventHandler<ActionEvent> doneInshowAllConfirmedCustomersIsPressed) {
 		this.allCustomersWithSMS.getDoneButton().setOnAction(doneInshowAllConfirmedCustomersIsPressed);
 	}
+
+
 
 
 	

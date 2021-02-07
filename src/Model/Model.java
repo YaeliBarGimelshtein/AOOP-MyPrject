@@ -282,9 +282,12 @@ public class Model {
 	public void deleteProduct(CareTaker lastStatus,String catalogNumber) {
 		lastStatus.save(this.save());
 		Iterator<Product> iterator=iterator();
+		Product p;
+		p=iterator.next(); //for the saving method
 		do {
-			iterator.next(); 
-		} while (iterator.hasNext() && !(iterator.next().getName().equals(catalogNumber)));
+			p=iterator.next(); 
+		} while (iterator.hasNext() && !(p.getName().equals(catalogNumber)));
+		p=iterator.next(); //to be after product itself
 		iterator.remove();
 		readInforamtionFromFile();
 	}
@@ -295,7 +298,6 @@ public class Model {
 		while(iterator.hasNext()) {
 			iterator.remove();
 		}
-		
 		updateSavingMethod(this.savingMethod);
 	}
 	
@@ -344,9 +346,6 @@ public class Model {
 				}
 				Product product = (Product) oIn.readObject();
 				this.curPosition=fileLenght-fIn.available();
-//				if(counter==1) {
-//					this.beforeCurPosition=this.curPosition;
-//				}
 				return product;
 			} catch (IOException e) {
 				
@@ -367,7 +366,10 @@ public class Model {
 					byte[] temp = new byte[(int) (raf.length() - raf.getFilePointer())];
 					raf.read(temp); //has the rest of the file without the product
 					raf.setLength(beforeCurPosition); //deletes the unwanted product
+					raf.seek(beforeCurPosition);
 					raf.write(temp); ///writes the rest back
+					this.fileLenght= productsFile.length();
+					this.curPosition=this.beforeCurPosition;
 				}
 			} catch (FileNotFoundException e) {
 				
