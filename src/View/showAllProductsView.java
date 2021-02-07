@@ -33,7 +33,7 @@ public class showAllProductsView {
 		this.headline.setTextFill(Color.DARKSLATEGRAY);
 		
 		this.allProducts=new Label();
-		this.allProducts.setFont(new Font("Arial",20));
+		this.allProducts.setFont(Font.font("Verdana", FontWeight.BOLD, 16));
 		
 		//layout
 		this.allDetails = new VBox();

@@ -15,7 +15,6 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.TreeMap;
-
 import Model.Memento.CareTaker;
 import Model.Memento.ModelMemento;
 
@@ -79,8 +78,23 @@ public class Model {
 		return new ModelMemento(copy);
 	}
 	
+	public ModelMemento saveFirstTime() {
+		TreeMap<String, Product> copy= new TreeMap<>();
+		Set<Map.Entry<String, Product>> productSet = allProducts.entrySet();
+		int counter=0;
+		
+		for (Map.Entry<String, Product> entry : productSet) {
+			copy.put(entry.getKey(), entry.getValue());
+			counter++;
+			if(counter==allProducts.size()-1) {
+				return new ModelMemento(copy);
+			}
+		}
+		return null;
+	}	
+	
 	public void load(ModelMemento lastModel) { 
-		if(lastModel.getAllProducts().size()==0) {
+		if(lastModel==null|| lastModel.getAllProducts().size()==0) {
 			updateSavingMethod(this.savingMethod);
 		}else {
 			this.allProducts=lastModel.getAllProducts();
@@ -260,8 +274,7 @@ public class Model {
 		try {
 			this.oOut.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			
 		}
 	}
 	
@@ -290,26 +303,26 @@ public class Model {
 	//iterator:
 	private class ProductIterator implements Iterator<Product> {
 		private ObjectInputStream oIn;
+		//private DataInputStream dIn;
+		private FileInputStream fIn;
 		private RandomAccessFile raf;
 		private long fileLenght;
 		private long curPosition;
 		private long beforeCurPosition;
+		private int counter;
 		
 		public ProductIterator() {
-			try {
-				resetInputStream();
-				fileLenght=oIn.available();
-				curPosition=0;
-				beforeCurPosition=0;
-			} catch (IOException e) {
-				
-			}
+			resetInputStream();
+			this.fileLenght=productsFile.length();
+			this.curPosition=0;
+			this.beforeCurPosition=0;
+			this.counter=0;
 		}
 
 		@Override
 		public boolean hasNext() {
 			try {
-				if(oIn.available()>0)
+				if(fIn.available()>0)
 					return true;
 				return false;
 			} catch (IOException e) {
@@ -325,9 +338,15 @@ public class Model {
 					oIn.close();
 					throw new NoSuchElementException();
 				}
-				this.beforeCurPosition=fileLenght-oIn.available();
+				counter++;
+				if(counter%2==0) {
+					this.beforeCurPosition=fileLenght-fIn.available();
+				}
 				Product product = (Product) oIn.readObject();
-				this.curPosition=fileLenght-oIn.available();
+				this.curPosition=fileLenght-fIn.available();
+//				if(counter==1) {
+//					this.beforeCurPosition=this.curPosition;
+//				}
 				return product;
 			} catch (IOException e) {
 				
@@ -342,10 +361,14 @@ public class Model {
 			try {
 				raf = new RandomAccessFile(productsFile, "rw");
 				raf.seek(curPosition);
-				byte[] temp = new byte[(int) (raf.length() - raf.getFilePointer())];
-				raf.read(temp); //has the rest of the file without the product
-				raf.setLength(beforeCurPosition); //deletes the unwanted product
-				raf.write(temp); ///writes the rest back
+				if(curPosition==fileLenght) {
+					raf.setLength(beforeCurPosition); //deletes the unwanted product
+				}else {
+					byte[] temp = new byte[(int) (raf.length() - raf.getFilePointer())];
+					raf.read(temp); //has the rest of the file without the product
+					raf.setLength(beforeCurPosition); //deletes the unwanted product
+					raf.write(temp); ///writes the rest back
+				}
 			} catch (FileNotFoundException e) {
 				
 			} catch (IOException e) {
@@ -356,10 +379,15 @@ public class Model {
 		
 		private void resetInputStream() {
 			try {
-				oIn = new ObjectInputStream(new FileInputStream(productsFile));
+				fIn=new FileInputStream(productsFile);
+				oIn = new ObjectInputStream(fIn);
+				//dIn= new DataInputStream(new FileInputStream(productsFile));
 			} catch (IOException e) {
 
 			}
 		}	
-	}	
+	}
+
+
+	
 }

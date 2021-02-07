@@ -34,7 +34,7 @@ public class showAllProfitsView {
 		this.headline.setTextFill(Color.DARKSLATEGRAY);
 		
 		this.allProfits=new Label();
-		this.allProfits.setFont(new Font("Arial",20));
+		this.allProfits.setFont(Font.font("Verdana", FontWeight.BOLD, 16));
 		
 		//layout
 		this.allDetails = new VBox();

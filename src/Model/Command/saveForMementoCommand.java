@@ -11,6 +11,6 @@ public class saveForMementoCommand {
 	}
 	
 	public ModelMemento saveForMementoFirstTime() {
-		return this.model.save();
+		return this.model.saveFirstTime();
 	}
 }
