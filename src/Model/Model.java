@@ -314,10 +314,14 @@ public class Model {
 		
 		public ProductIterator() {
 			resetInputStream();
-			this.fileLength=productsFile.length();
-			this.curPosition=0;
-			this.beforeCurPosition=0;
-			this.counter=0;
+			try {
+				this.fileLength=raf.length();
+				this.curPosition=0;
+				this.beforeCurPosition=0;
+				this.counter=0;
+			} catch (IOException e) {
+				
+			}
 		}
 
 		@Override
@@ -341,7 +345,7 @@ public class Model {
 				}
 				counter++;
 				if(counter%2==0) {
-					this.beforeCurPosition=fileLength-fIn.available();
+					this.beforeCurPosition=this.curPosition;
 				}
 				Product product = (Product) oIn.readObject();
 				this.curPosition=fileLength-fIn.available();
@@ -364,9 +368,9 @@ public class Model {
 					byte[] temp = new byte[(int) (raf.length() - raf.getFilePointer())];
 					raf.read(temp); //has the rest of the file without the product
 					raf.setLength(beforeCurPosition); //deletes the unwanted product
-					raf.seek(beforeCurPosition);
+					//raf.seek(beforeCurPosition);
 					raf.write(temp); ///writes the rest back
-					this.fileLength= productsFile.length();
+					this.fileLength= raf.length();
 					this.curPosition=this.beforeCurPosition;
 				}
 			} catch (FileNotFoundException e) {
@@ -386,8 +390,5 @@ public class Model {
 
 			}
 		}	
-	}
-
-
-	
+	}	
 }
