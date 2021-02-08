@@ -25,7 +25,7 @@ public class Model {
 	public static final int DESCENDING = 1;
 	public static final int BY_INPUT_ORDER = 2; 
 	public static final String F_NAME = "products.txt";
-	//frr singelton
+	//for singelton
 	private static Model model;
 	//for file
 	private boolean readFromFile;
@@ -43,7 +43,6 @@ public class Model {
 		}
 		return model;
 	}
-	
 	
 	private Model() {
 		this.productsFile = new File(F_NAME);
@@ -153,7 +152,6 @@ public class Model {
 					return o1.compareTo(o2);
 				}
 			});
-			
 			break;
 		case DESCENDING:
 			this.allProducts=new TreeMap<>(new Comparator<String>() {
@@ -162,7 +160,6 @@ public class Model {
 					return -(o1.compareTo(o2));
 				}
 			});
-			
 			break;
 		case BY_INPUT_ORDER:
 			this.allProducts=new TreeMap<>(new Comparator<String>() {
@@ -177,7 +174,8 @@ public class Model {
 	
 	public void writeSavingMethodToFile(int orderToSaveProducts) {
 		try {
-			Product savingMethod= new Product("", orderToSaveProducts, 0, null);
+			Customer stam= new Customer("", "", true);
+			Product savingMethod= new Product("", orderToSaveProducts, 0, stam);
 			oOut.writeObject(savingMethod);
 		} catch (IOException e) {
 			
@@ -368,7 +366,6 @@ public class Model {
 					byte[] temp = new byte[(int) (raf.length() - raf.getFilePointer())];
 					raf.read(temp); //has the rest of the file without the product
 					raf.setLength(beforeCurPosition); //deletes the unwanted product
-					//raf.seek(beforeCurPosition);
 					raf.write(temp); ///writes the rest back
 					this.fileLength= raf.length();
 					this.curPosition=this.beforeCurPosition;
@@ -379,7 +376,6 @@ public class Model {
 				
 			}
 		}
-		
 		
 		private void resetInputStream() {
 			try {
