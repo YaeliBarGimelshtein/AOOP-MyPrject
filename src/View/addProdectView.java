@@ -171,7 +171,7 @@ public class addProdectView {
 		return true;
 	}
 	
-	//need to make exceptions
+	
 
 	public String getName() {
 		if(name.getText().isEmpty())

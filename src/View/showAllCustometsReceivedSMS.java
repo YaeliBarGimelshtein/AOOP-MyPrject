@@ -123,8 +123,6 @@ public class showAllCustometsReceivedSMS {
 	}
 
 	public void close() {
-		//this.allDetails=new VBox();
-	//	this.allToshow=new ArrayList<>();
 		for (int i = 0; i < count; i++) {
 			allDetails.getChildren().remove(allToshow.get(i));
 		}
