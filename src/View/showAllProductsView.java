@@ -49,7 +49,7 @@ public class showAllProductsView {
 		this.screen=new StackPane();
 		this.screen.getChildren().addAll(allDetails);
 		
-		Scene scene = new Scene(screen,1300,600);
+		Scene scene = new Scene(screen,1400,600);
 		
 		this.stage=stage;
 		this.stage.setScene(scene);

@@ -70,7 +70,6 @@ public class Model {
 		}
 	}
 	
-	
 	public ModelMemento save() {
 		TreeMap<String, Product> copy= new TreeMap<>();
 		copy.putAll(this.allProducts);
