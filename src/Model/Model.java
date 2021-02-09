@@ -292,10 +292,14 @@ public class Model {
 	public void deleteAll(CareTaker lastStatus) {
 		lastStatus.save(this.save());
 		Iterator<Product> iterator=iterator();
+		Product p;
+		p=iterator.next(); //for the saving method
 		while(iterator.hasNext()) {
+			iterator.next();
 			iterator.remove();
 		}
-		updateSavingMethod(this.savingMethod);
+		//updateSavingMethod(this.savingMethod);
+		readInforamtionFromFile();
 	}
 	
 	
