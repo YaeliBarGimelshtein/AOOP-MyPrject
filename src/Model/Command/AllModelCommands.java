@@ -18,7 +18,6 @@ public class AllModelCommands implements ModelCommands{
 	private sendSMSCommand sentSMS;
 	private getAllConfirmedCustomers allConfirmed;
 	private checkIfAreProductsCommand areProducts;
-	private saveForMementoCommand saveFirstMemento;
 	private deleteProductCommand deleteProduct;
 	private deleteAllProducts deleteAll;
 	private closeOutputCommand closeOutput;
@@ -34,7 +33,6 @@ public class AllModelCommands implements ModelCommands{
 		this.sentSMS= new sendSMSCommand(model);
 		this.allConfirmed= new getAllConfirmedCustomers(model);
 		this.areProducts=new checkIfAreProductsCommand(model);
-		this.saveFirstMemento= new saveForMementoCommand(model);
 		this.deleteProduct= new deleteProductCommand(model);
 		this.deleteAll= new deleteAllProducts(model);
 		this.closeOutput= new closeOutputCommand(model);
@@ -54,10 +52,6 @@ public class AllModelCommands implements ModelCommands{
 	@Override
 	public void updateSavingMethod(int orderToSaveProducts) {
 		updateSavingMethod.updateSavingMethod(orderToSaveProducts);
-	}
-	
-	public void setFirstMementoAfterReadingFromFile() {
-		lastStatus.save(saveFirstMemento.saveForMementoFirstTime());
 	}
 
 	@Override

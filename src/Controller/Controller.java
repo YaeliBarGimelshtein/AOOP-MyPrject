@@ -30,7 +30,7 @@ public class Controller {
 			};
 			view.addChangeListenerTosavingMethodPicked(savingMethodPicked);
 		}else {
-			commands.setFirstMementoAfterReadingFromFile();
+			view.updateWindowToReadFromFile();
 		}
 		
 		

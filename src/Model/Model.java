@@ -74,21 +74,6 @@ public class Model {
 		TreeMap<String, Product> copy= new TreeMap<>();
 		copy.putAll(this.allProducts);
 		return new ModelMemento(copy);
-	}
-	
-	public ModelMemento saveFirstTime() {
-		TreeMap<String, Product> copy= new TreeMap<>();
-		Set<Map.Entry<String, Product>> productSet = allProducts.entrySet();
-		int counter=0;
-		
-		for (Map.Entry<String, Product> entry : productSet) {
-			copy.put(entry.getKey(), entry.getValue());
-			counter++;
-			if(counter==allProducts.size()-1) {
-				return new ModelMemento(copy);
-			}
-		}
-		return null;
 	}	
 	
 	public void load(ModelMemento lastModel) { 
@@ -97,12 +82,19 @@ public class Model {
 		}else {
 			this.allProducts=lastModel.getAllProducts();
 		}
-		//removing from file
-		Iterator<Product> iterator= iterator();
-		while(iterator.hasNext()) {
-			iterator.next();
+		//rewriting to file
+//		Iterator<Product> iterator= iterator();
+//		Product p;
+//		p=iterator.next(); //after savimg method
+//		do {
+//			p=iterator.next(); //after product
+//			iterator.remove();
+//		} while (iterator.hasNext());
+		deleteAll(null);
+		Set<Map.Entry<String, Product>> productSet = allProducts.entrySet();
+		for (Map.Entry<String, Product> entry : productSet) {
+			writeProductToFile(entry.getValue(), entry.getKey());
 		}
-		iterator.remove();
 	}
 	
 	// Notify
@@ -277,7 +269,8 @@ public class Model {
 	
 	
 	public void deleteProduct(CareTaker lastStatus,String catalogNumber) {
-		lastStatus.save(this.save());
+		if(lastStatus!=null)
+			lastStatus.save(this.save());
 		Iterator<Product> iterator=iterator();
 		Product p;
 		p=iterator.next(); //for the saving method
@@ -290,15 +283,15 @@ public class Model {
 	}
 	
 	public void deleteAll(CareTaker lastStatus) {
-		lastStatus.save(this.save());
+		if(lastStatus!=null)
+			lastStatus.save(this.save());
 		Iterator<Product> iterator=iterator();
 		Product p;
 		p=iterator.next(); //for the saving method
 		while(iterator.hasNext()) {
-			iterator.next();
-			iterator.remove();
+			p=iterator.next();
+			deleteProduct(null, p.getName());
 		}
-		//updateSavingMethod(this.savingMethod);
 		readInforamtionFromFile();
 	}
 	
@@ -370,9 +363,9 @@ public class Model {
 					raf.read(temp); //has the rest of the file without the product
 					raf.setLength(beforeCurPosition); //deletes the unwanted product
 					raf.write(temp); ///writes the rest back
-					this.fileLength= raf.length();
-					this.curPosition=this.beforeCurPosition;
 				}
+				this.fileLength= raf.length();
+				this.curPosition=this.beforeCurPosition;
 			} catch (FileNotFoundException e) {
 				
 			} catch (IOException e) {

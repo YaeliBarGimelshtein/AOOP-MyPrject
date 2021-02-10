@@ -305,12 +305,19 @@ public class View {
 	
 	public void closeAddProductWindow(boolean isException) { //to add product
 		this.addProductView.closeWindow();
+		if(this.undoLastAddedProduct.isDisable()==true)
+			this.undoLastAddedProduct.setDisable(false);
 		if(!isException) {
 			this.error.setText("Product Added");
 		}else {
 			this.error.setText("Price cannot include characters, digits only. Product NOT added");
 		}
 		this.stage.show();
+	}
+	
+
+	public void updateWindowToReadFromFile() {
+		this.undoLastAddedProduct.setDisable(true);
 	}
 	
 	public void updateWindowToUndo() {
@@ -324,6 +331,8 @@ public class View {
 	public void updateWindowToDeleteProductFromFile() {
 		this.searchProductByCatalogNumberView.closeWindow();
 		this.error.setText("Product Deleted");
+		if(this.undoLastAddedProduct.isDisable()==true)
+			this.undoLastAddedProduct.setDisable(false);
 		this.stage.show();
 	}
 	
@@ -335,6 +344,8 @@ public class View {
 
 	public void updateWindowToDeleteAllProductFromFile() {
 		this.error.setText("All Products Deleted");
+		if(this.undoLastAddedProduct.isDisable()==true)
+			this.undoLastAddedProduct.setDisable(false);
 	}
 	
 	public void updateWindowToUnableDeleteAllProductFromFile() {
@@ -472,6 +483,8 @@ public class View {
 	public void addEventHandlerTodoneInshowAllConfirmedCustomersIsPressed(EventHandler<ActionEvent> doneInshowAllConfirmedCustomersIsPressed) {
 		this.allCustomersWithSMS.getDoneButton().setOnAction(doneInshowAllConfirmedCustomersIsPressed);
 	}
+
+
 
 
 
