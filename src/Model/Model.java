@@ -137,6 +137,7 @@ public class Model {
 		try {
 			raf.writeUTF(orderToSaveProducts);
 			this.positionAfterSavingMethod=raf.getFilePointer();
+			System.out.println(raf.length());
 		} catch (IOException e) {
 			
 		}
@@ -165,7 +166,9 @@ public class Model {
 				this.raf.writeUTF(entry.getKey());
 				entry.getValue().writeToFile(raf);
 			}
+			System.out.println(raf.length());
 			this.raf.setLength(this.raf.getFilePointer());
+			System.out.println(raf.length());
 		} catch (IOException e) {
 			
 		}
@@ -277,6 +280,8 @@ public class Model {
 		@Override
 		public boolean hasNext() {
 			try {
+				System.out.println(raf.length());
+				System.out.println(raf.getFilePointer());
 				if(raf.getFilePointer()<raf.length())
 					return true;
 				return false;

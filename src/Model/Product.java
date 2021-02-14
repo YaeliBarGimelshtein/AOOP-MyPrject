@@ -24,9 +24,9 @@ public class Product {
 		try {
 			this.name = raf.readUTF();
 			this.priceForStore = raf.readInt();
-			this.priceForCustomer = raf.readInt();;
+			this.priceForCustomer = raf.readInt();
 			this.boughtBy = new Customer(raf);
-			this.profit=priceForCustomer-priceForStore;
+			this.profit=raf.readInt();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
