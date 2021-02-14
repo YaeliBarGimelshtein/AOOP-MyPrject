@@ -175,8 +175,8 @@ public class View {
 	}
 	
 	
-	public int getOrderToSaveProducts() {
-		int order= this.optionsView.getChosenAndClose();
+	public String getOrderToSaveProducts() {
+		String order= this.optionsView.getChosenAndClose();
 		createMenuView();
 		return order;
 	}

@@ -1,11 +1,11 @@
 package Model;
 
-import java.io.Serializable;
+import java.io.IOException;
+import java.io.RandomAccessFile;
 
 import Model.Observer.Observer;
 
-public class Customer implements Observer,  Serializable  {
-	private static final long serialVersionUID = 1L;
+public class Customer implements Observer {
 	String name;
 	String phoneNumber;
 	boolean intrestedInSales;
@@ -14,6 +14,16 @@ public class Customer implements Observer,  Serializable  {
 		this.name = name;
 		this.phoneNumber = phoneNumber;
 		this.intrestedInSales = intrestedInSales;
+	}
+
+	public Customer(RandomAccessFile raf) {
+		try {
+			this.name = raf.readUTF();
+			this.phoneNumber = raf.readUTF();;
+			this.intrestedInSales = raf.readBoolean();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -50,5 +60,14 @@ public class Customer implements Observer,  Serializable  {
 		}
 		return true;
 	}
-	
+
+	public void writeToFile(RandomAccessFile raf) {
+		try {
+			raf.writeUTF(name);
+			raf.writeUTF(phoneNumber);
+			raf.writeBoolean(intrestedInSales);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 }

@@ -80,16 +80,16 @@ public class saveProductsOptionsView {
 		this.stage.show();
 	}
 	
-	public int getChosenAndClose() {
+	public String getChosenAndClose() {
 		if(byABCAscending.isSelected()) {
 			this.stage.close();;
-			return 0;
+			return "ASCENDING";
 		}else if(byABCDescending.isSelected()) {
 			this.stage.close();
-			return 1;
+			return "DESCENDING";
 		}else {
 			this.stage.close();
-			return 2;
+			return "BY_INPUT_ORDER";
 		}
 	}
 

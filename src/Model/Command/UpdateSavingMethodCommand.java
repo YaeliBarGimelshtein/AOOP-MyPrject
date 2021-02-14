@@ -9,7 +9,7 @@ public class UpdateSavingMethodCommand {
 		this.model = model;
 	}
 	
-	public void updateSavingMethod(int orderToSaveProducts) {
+	public void updateSavingMethod(String orderToSaveProducts) {
 		model.updateSavingMethod(orderToSaveProducts);
 		model.writeSavingMethodToFile(orderToSaveProducts);
 	}

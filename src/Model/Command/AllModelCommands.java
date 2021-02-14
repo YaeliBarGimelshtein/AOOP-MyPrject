@@ -38,10 +38,10 @@ public class AllModelCommands implements ModelCommands{
 		this.closeOutput= new closeOutputCommand(model);
 	}
 
-	@Override
-	public void addProductByObject(Product p, String catalogNumber) {
-		addProduct.addProductByObject(lastStatus,p, catalogNumber);
-	}
+//	@Override
+//	public void addProductByObject(Product p, String catalogNumber) {
+//		addProduct.addProductByObject(lastStatus,p, catalogNumber);
+//	}
 
 	@Override
 	public void addProductByFields(String catalogNumber, String name, int priceForStore, int priceForCustomer,
@@ -50,7 +50,7 @@ public class AllModelCommands implements ModelCommands{
 	}
 
 	@Override
-	public void updateSavingMethod(int orderToSaveProducts) {
+	public void updateSavingMethod(String orderToSaveProducts) {
 		updateSavingMethod.updateSavingMethod(orderToSaveProducts);
 	}
 

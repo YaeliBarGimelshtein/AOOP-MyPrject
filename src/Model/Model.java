@@ -1,17 +1,15 @@
 package Model;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.io.RandomAccessFile;
+import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.TreeMap;
@@ -21,20 +19,18 @@ import Model.Memento.ModelMemento;
 
 
 public class Model {
-	public static final int ASCENDING = 0;
-	public static final int DESCENDING = 1;
-	public static final int BY_INPUT_ORDER = 2; 
 	public static final String F_NAME = "products.txt";
 	//for singelton
 	private static Model model;
 	//for file
 	private boolean readFromFile;
 	private File productsFile;
-	private ObjectOutputStream oOut;
+	private RandomAccessFile raf;
+	private long positionAfterSavingMethod;
 	//for data
 	private TreeMap<String, Product> allProducts;
 	private ArrayList<String> allReceivingClients;
-	private int savingMethod;
+	private String savingMethod;
 	
 	//model is a singelton
 	public static Model getModel() {
@@ -45,28 +41,14 @@ public class Model {
 	}
 	
 	private Model() {
-		this.productsFile = new File(F_NAME);
-		this.readFromFile = readInforamtionFromFile();
-		this.allReceivingClients= new ArrayList<>();
-		resetOutputStream();
-	}
-	
-	public void resetOutputStream() {
 		try {
-			if (readFromFile) {
-				oOut = new ObjectOutputStream(new FileOutputStream(productsFile, readFromFile)) {
-					@Override
-					protected void writeStreamHeader() throws IOException {
-						return;
-					}
-				};
-			} else {
-				oOut = new ObjectOutputStream(new FileOutputStream(productsFile, readFromFile));
-			}
+			this.productsFile = new File(F_NAME);
+			this.raf= new RandomAccessFile(productsFile, "rw");
+			this.readFromFile = readInforamtionFromFile();
+			this.allReceivingClients= new ArrayList<>();
+			this.positionAfterSavingMethod=0;
 		} catch (FileNotFoundException e) {
-			
-		} catch (IOException e) {
-			
+			e.printStackTrace();
 		}
 	}
 	
@@ -83,18 +65,8 @@ public class Model {
 			this.allProducts=lastModel.getAllProducts();
 		}
 		//rewriting to file
-//		Iterator<Product> iterator= iterator();
-//		Product p;
-//		p=iterator.next(); //after savimg method
-//		do {
-//			p=iterator.next(); //after product
-//			iterator.remove();
-//		} while (iterator.hasNext());
 		deleteAll(null);
-		Set<Map.Entry<String, Product>> productSet = allProducts.entrySet();
-		for (Map.Entry<String, Product> entry : productSet) {
-			writeProductToFile(entry.getValue(), entry.getKey());
-		}
+		writeAllProductsToFile();
 	}
 	
 	// Notify
@@ -107,14 +79,12 @@ public class Model {
 	
 	public boolean readInforamtionFromFile() {
 		try {
-			if (productsFile.exists()) {
-				Iterator<Product> iterator=iterator();
-				Product savingMethodP= iterator.next();
-				updateSavingMethod(savingMethodP.getPriceForStore());
+			if (raf.length()>0) {
+				Iterator<Entry<String, Product>> iterator=iterator();
+				updateSavingMethod(this.savingMethod);
 				while(iterator.hasNext()) {
-					Product catalog= iterator.next();
-					Product p= iterator.next();
-					allProducts.put(catalog.getName(), p);
+					Entry<String, Product> next= iterator.next();
+					allProducts.put(next.getKey(), next.getValue());
 				}
 			return true;
 			}
@@ -129,14 +99,14 @@ public class Model {
 		return this.readFromFile;
 	}
 	
-	public Iterator<Product> iterator() {
+	public Iterator<Map.Entry<String,Product>> iterator() {
 		return new ProductIterator();
 	}
 
-	public void updateSavingMethod(int orderToSaveProducts) {
+	public void updateSavingMethod(String orderToSaveProducts) {
 		this.savingMethod=orderToSaveProducts;
 		switch (orderToSaveProducts) {
-		case ASCENDING:
+		case "ASCENDING":
 			this.allProducts= new TreeMap<>(new Comparator<String>() { 
 				@Override
 				public int compare(String o1, String o2) { 
@@ -144,7 +114,7 @@ public class Model {
 				}
 			});
 			break;
-		case DESCENDING:
+		case "DESCENDING":
 			this.allProducts=new TreeMap<>(new Comparator<String>() {
 				@Override
 				public int compare(String o1, String o2) { 
@@ -152,7 +122,7 @@ public class Model {
 				}
 			});
 			break;
-		case BY_INPUT_ORDER:
+		case "BY_INPUT_ORDER":
 			this.allProducts=new TreeMap<>(new Comparator<String>() {
 				@Override
 				public int compare(String o1, String o2) { 
@@ -163,11 +133,10 @@ public class Model {
 		}
 	}
 	
-	public void writeSavingMethodToFile(int orderToSaveProducts) {
+	public void writeSavingMethodToFile(String orderToSaveProducts) {
 		try {
-			Customer stam= new Customer("", "", true);
-			Product savingMethod= new Product("", orderToSaveProducts, 0, stam);
-			oOut.writeObject(savingMethod);
+			raf.writeUTF(orderToSaveProducts);
+			this.positionAfterSavingMethod=raf.getFilePointer();
 		} catch (IOException e) {
 			
 		}
@@ -183,20 +152,20 @@ public class Model {
 		
 		Customer boughtBy= new Customer(Cname, CphoneNumber, intrestedInSales);
 		Product p= new Product(name, priceForStore, priceForCustomer, boughtBy);
-		addProduct(lastStatus,p, catalogNumber);
-	}
-	
-	public void addProduct(CareTaker lastStatus, Product p, String catalogNumber) {
 		lastStatus.save(this.save());
 		allProducts.put(catalogNumber, p);
-		writeProductToFile(p,catalogNumber);
+		writeAllProductsToFile();
 	}
 
-	public void writeProductToFile(Product p, String catalogNumber) {
+	public void writeAllProductsToFile() {
 		try {
-			Product catalog= new Product(catalogNumber, 0, 0, null);
-			oOut.writeObject(catalog);
-			oOut.writeObject(p);
+			this.raf.seek(positionAfterSavingMethod);
+			Set<Map.Entry<String, Product>> productSet = allProducts.entrySet();
+			for (Map.Entry<String, Product> entry : productSet) {
+				this.raf.writeUTF(entry.getKey());
+				entry.getValue().writeToFile(raf);
+			}
+			this.raf.setLength(this.raf.getFilePointer());
 		} catch (IOException e) {
 			
 		}
@@ -261,7 +230,7 @@ public class Model {
 	
 	public void close() {
 		try {
-			this.oOut.close();
+			this.raf.close();
 		} catch (IOException e) {
 			
 		}
@@ -271,48 +240,35 @@ public class Model {
 	public void deleteProduct(CareTaker lastStatus,String catalogNumber) {
 		if(lastStatus!=null)
 			lastStatus.save(this.save());
-		Iterator<Product> iterator=iterator();
-		Product p;
-		p=iterator.next(); //for the saving method
-		do {
-			p=iterator.next(); 
-		} while (iterator.hasNext() && !(p.getName().equals(catalogNumber)));
-		p=iterator.next(); //to be after product itself
+		Iterator<Entry<String, Product>> iterator=iterator();
+		while (iterator.hasNext()&& !(catalogNumber.equals(iterator.next().getKey()))) {
+			iterator.next();
+		}
 		iterator.remove();
-		readInforamtionFromFile();
+		if(lastStatus!=null)
+			readInforamtionFromFile();
 	}
 	
 	public void deleteAll(CareTaker lastStatus) {
 		if(lastStatus!=null)
 			lastStatus.save(this.save());
-		Iterator<Product> iterator=iterator();
-		Product p;
-		p=iterator.next(); //for the saving method
+		Iterator<Entry<String, Product>> iterator=iterator();
 		while(iterator.hasNext()) {
-			p=iterator.next();
-			deleteProduct(null, p.getName());
+			deleteProduct(null, iterator.next().getKey());
 		}
 		readInforamtionFromFile();
 	}
 	
 	
-	//iterator:
-	private class ProductIterator implements Iterator<Product> {
-		private ObjectInputStream oIn;
-		private FileInputStream fIn;
-		private RandomAccessFile raf;
-		private long fileLength ;
-		private long curPosition;
+	//iterator
+	private class ProductIterator implements Iterator<Map.Entry<String,Product>> {
 		private long beforeCurPosition;
-		private int counter;
-		
 		public ProductIterator() {
-			resetInputStream();
 			try {
-				this.fileLength=raf.length();
-				this.curPosition=0;
+				raf.seek(0);
+				savingMethod=raf.readUTF();
+				positionAfterSavingMethod=raf.getFilePointer();
 				this.beforeCurPosition=0;
-				this.counter=0;
 			} catch (IOException e) {
 				
 			}
@@ -321,7 +277,7 @@ public class Model {
 		@Override
 		public boolean hasNext() {
 			try {
-				if(fIn.available()>0)
+				if(raf.getFilePointer()<raf.length())
 					return true;
 				return false;
 			} catch (IOException e) {
@@ -331,19 +287,15 @@ public class Model {
 		}
 
 		@Override
-		public Product next() {
+		public Entry<String, Product> next() {
 			try {
 				if (!hasNext()) {
-					oIn.close();
+					raf.close();
 					throw new NoSuchElementException();
 				}
-				counter++;
-				if(counter%2==0) {
-					this.beforeCurPosition=this.curPosition;
-				}
-				Product product = (Product) oIn.readObject();
-				this.curPosition=fileLength-fIn.available();
-				return product;
+				this.beforeCurPosition=raf.getFilePointer();
+				Entry<String, Product> next=new AbstractMap.SimpleEntry<String, Product>(raf.readUTF(), new Product(raf));
+				return next;
 			} catch (IOException e) {
 				
 			} catch (Exception e) {
@@ -355,8 +307,8 @@ public class Model {
 		@Override
 		public void remove() {
 			try {
-				raf.seek(curPosition);
-				if(curPosition==fileLength) {
+				raf.seek(raf.getFilePointer());
+				if(raf.getFilePointer()==raf.length()) {
 					raf.setLength(beforeCurPosition); //deletes the unwanted product
 				}else {
 					byte[] temp = new byte[(int) (raf.length() - raf.getFilePointer())];
@@ -364,23 +316,11 @@ public class Model {
 					raf.setLength(beforeCurPosition); //deletes the unwanted product
 					raf.write(temp); ///writes the rest back
 				}
-				this.fileLength= raf.length();
-				this.curPosition=this.beforeCurPosition;
 			} catch (FileNotFoundException e) {
 				
 			} catch (IOException e) {
 				
 			}
-		}
-		
-		private void resetInputStream() {
-			try {
-				fIn=new FileInputStream(productsFile);
-				oIn = new ObjectInputStream(fIn);
-				raf = new RandomAccessFile(productsFile, "rw");
-			} catch (IOException e) {
-
-			}
 		}	
-	}	
+	}
 }
