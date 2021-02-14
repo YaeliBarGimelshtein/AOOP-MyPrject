@@ -46,7 +46,6 @@ public class Model {
 			this.raf= new RandomAccessFile(productsFile, "rw");
 			this.readFromFile = readInforamtionFromFile();
 			this.allReceivingClients= new ArrayList<>();
-			this.positionAfterSavingMethod=0;
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
@@ -137,7 +136,6 @@ public class Model {
 		try {
 			raf.writeUTF(orderToSaveProducts);
 			this.positionAfterSavingMethod=raf.getFilePointer();
-			System.out.println(raf.length());
 		} catch (IOException e) {
 			
 		}
@@ -166,9 +164,7 @@ public class Model {
 				this.raf.writeUTF(entry.getKey());
 				entry.getValue().writeToFile(raf);
 			}
-			System.out.println(raf.length());
 			this.raf.setLength(this.raf.getFilePointer());
-			System.out.println(raf.length());
 		} catch (IOException e) {
 			
 		}
@@ -280,8 +276,6 @@ public class Model {
 		@Override
 		public boolean hasNext() {
 			try {
-				System.out.println(raf.length());
-				System.out.println(raf.getFilePointer());
 				if(raf.getFilePointer()<raf.length())
 					return true;
 				return false;
@@ -320,6 +314,7 @@ public class Model {
 					raf.read(temp); //has the rest of the file without the product
 					raf.setLength(beforeCurPosition); //deletes the unwanted product
 					raf.write(temp); ///writes the rest back
+					raf.seek(beforeCurPosition);
 				}
 			} catch (FileNotFoundException e) {
 				
