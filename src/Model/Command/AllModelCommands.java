@@ -38,11 +38,6 @@ public class AllModelCommands implements ModelCommands{
 		this.closeOutput= new closeOutputCommand(model);
 	}
 
-//	@Override
-//	public void addProductByObject(Product p, String catalogNumber) {
-//		addProduct.addProductByObject(lastStatus,p, catalogNumber);
-//	}
-
 	@Override
 	public void addProductByFields(String catalogNumber, String name, int priceForStore, int priceForCustomer,
 			String Cname, String CphoneNumber, boolean intrestedInSales) {
@@ -100,8 +95,8 @@ public class AllModelCommands implements ModelCommands{
 		return "False";
 	}
 
-	public void undo() {
-		this.undoCommand.undo(lastStatus.undo());
+	public boolean undo() {
+		return this.undoCommand.undo(lastStatus.undo());
 	}
 
 	@Override
@@ -125,7 +120,7 @@ public class AllModelCommands implements ModelCommands{
 
 	@Override
 	public void deleteProduct(String catalogNumber) {
-		this.deleteProduct.deleteProduct(this.lastStatus,catalogNumber);
+		this.deleteProduct.deleteProduct(catalogNumber, this.lastStatus);
 	}
 
 	@Override

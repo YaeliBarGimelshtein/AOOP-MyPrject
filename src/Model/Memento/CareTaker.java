@@ -1,6 +1,9 @@
 package Model.Memento;
 
+
 import java.util.Stack;
+
+
 
 
 public class CareTaker {
@@ -11,10 +14,7 @@ public class CareTaker {
 		this.stack= new Stack<>();
 	}
 
-
 	public void save(ModelMemento lastModel) {
-		while(!stack.empty())
-			stack.pop();
 		this.stack.push(lastModel);
 	}
 	
@@ -23,5 +23,4 @@ public class CareTaker {
 			return null;
 		return this.stack.pop();
 	}
-	
 }

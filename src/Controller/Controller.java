@@ -196,12 +196,12 @@ public class Controller {
 		EventHandler<ActionEvent> undoLastAddedProductIsPressed= new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				if(commands.checkIfAreProducts()==true) {
-					commands.undo();
-					view.updateWindowToUndo();
-				}else {
-					view.updateWindowToUnAbleUndo();
-				}
+				//if(commands.checkIfAreProducts()==true) {
+					boolean finish=commands.undo();
+					view.updateWindowToUndo(finish);
+				//}else {
+				//	view.updateWindowToUnAbleUndo();
+				//}
 			}
 		};
 		view.addEventHandlerToUndoLastAddedProduct(undoLastAddedProductIsPressed);

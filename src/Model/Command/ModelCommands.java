@@ -10,7 +10,7 @@ public interface ModelCommands {
 	boolean findProduct(String catalogNumberToFind);
 	String getAllProducts();
 	String getAllPrfits();
-	void undo();
+	boolean undo();
 	void sendSMS();
 	ArrayList<String> getAllConfirmedCustomers();
 	boolean checkIfAreProducts();

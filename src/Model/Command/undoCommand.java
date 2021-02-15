@@ -11,8 +11,8 @@ private Model model;
 		this.model = model;
 	}
 	
-	public void undo(ModelMemento lastModel) {
-		this.model.load(lastModel);
+	public boolean undo(ModelMemento lastModel) {
+		return this.model.load(lastModel);
 	}
 
 }

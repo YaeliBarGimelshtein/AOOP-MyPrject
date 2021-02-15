@@ -320,8 +320,12 @@ public class View {
 		this.undoLastAddedProduct.setDisable(true);
 	}
 	
-	public void updateWindowToUndo() {
-		this.error.setText("Undid Last Product");
+	public void updateWindowToUndo(boolean finish) {
+		if(finish)
+			this.error.setText("Undid Last Product");
+		else {
+			this.error.setText("No more Undo Possible");
+		}
 	}
 	
 	public void updateWindowToUnAbleUndo() {

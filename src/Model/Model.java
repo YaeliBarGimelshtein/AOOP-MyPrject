@@ -55,15 +55,19 @@ public class Model {
 		return new ModelMemento(copy);
 	}	
 	
-	public void load(ModelMemento lastModel) { 
-		deleteAll(null);
+	public boolean load(ModelMemento lastModel) { 
 		if(lastModel==null|| lastModel.getAllProducts().size()==0) {
+			if(readFromFile)
+				return false;
+			deleteAll(null);
 			updateSavingMethod(this.savingMethod);
 		}else {
+			deleteAll(null);
 			this.allProducts=lastModel.getAllProducts();
 		}
 		//rewriting to file
 		writeAllProductsToFile();
+		return true;
 	}
 	
 	// Notify
@@ -233,8 +237,7 @@ public class Model {
 		}
 	}
 	
-	
-	public void deleteProduct(CareTaker lastStatus,String catalogNumber) {
+	public void deleteProduct(String catalogNumber, CareTaker lastStatus ) {
 		if(lastStatus!=null)
 			lastStatus.save(this.save());
 		Iterator<Entry<String, Product>> iterator=iterator();
@@ -252,7 +255,7 @@ public class Model {
 			lastStatus.save(this.save());
 		Iterator<Entry<String, Product>> iterator=iterator();
 		while(iterator.hasNext()) {
-			deleteProduct(null, iterator.next().getKey());
+			deleteProduct(iterator.next().getKey(),null);
 		}
 		readInforamtionFromFile();
 	}

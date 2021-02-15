@@ -1,7 +1,6 @@
 package Model.Memento;
 
 import java.util.TreeMap;
-
 import Model.Product;
 
 public class ModelMemento {
@@ -14,6 +13,4 @@ public class ModelMemento {
 	public TreeMap<String, Product> getAllProducts() {
 		return allProducts;
 	}
-	
-	
 }

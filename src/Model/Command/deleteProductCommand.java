@@ -10,7 +10,7 @@ public class deleteProductCommand {
 		this.model = model;
 	}
 	
-	public void deleteProduct(CareTaker lastStatus,String catalogNumber) {
-		this.model.deleteProduct(lastStatus,catalogNumber);
+	public void deleteProduct(String catalogNumber,CareTaker lastStatus) {
+		this.model.deleteProduct(catalogNumber,lastStatus);
 	}
 }
