@@ -16,8 +16,6 @@ import java.util.TreeMap;
 import Model.Memento.CareTaker;
 import Model.Memento.ModelMemento;
 
-
-
 public class Model {
 	public static final String F_NAME = "products.txt";
 	//for singelton
@@ -58,13 +56,13 @@ public class Model {
 	}	
 	
 	public void load(ModelMemento lastModel) { 
+		deleteAll(null);
 		if(lastModel==null|| lastModel.getAllProducts().size()==0) {
 			updateSavingMethod(this.savingMethod);
 		}else {
 			this.allProducts=lastModel.getAllProducts();
 		}
 		//rewriting to file
-		deleteAll(null);
 		writeAllProductsToFile();
 	}
 	
@@ -240,8 +238,9 @@ public class Model {
 		if(lastStatus!=null)
 			lastStatus.save(this.save());
 		Iterator<Entry<String, Product>> iterator=iterator();
-		while (iterator.hasNext()&& !(catalogNumber.equals(iterator.next().getKey()))) {
-			iterator.next();
+		Entry<String, Product> next =iterator.next();
+		while (iterator.hasNext()&& !(catalogNumber.equals(next.getKey()))) {
+			next=iterator.next();
 		}
 		iterator.remove();
 		if(lastStatus!=null)
