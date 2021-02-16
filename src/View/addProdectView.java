@@ -161,13 +161,29 @@ public class addProdectView {
 
 
 	public boolean checkAddProductDone() {
-		if(catalogNumber.getText().isEmpty() ||customerName.getText().isEmpty() || phoneNumber.getText().isEmpty()) {
+		if (catalogNumber.getText().isEmpty() || customerName.getText().isEmpty() || phoneNumber.getText().isEmpty()) {
 			Alert msg = new Alert(AlertType.ERROR);
 			msg.setContentText("Must add: Catalog Number, Customer Name, Phone Number");
 			msg.setTitle("Not Valid");
 			msg.show();
 			return false;
-		}	
+		}
+		int checkStore, checkCustomer;
+		if (!(priceForStore.getText().isEmpty()) ||!(priceForCustomer.getText().isEmpty()) ) {
+			try {
+				checkStore = Integer.parseInt(priceForStore.getText());
+				checkCustomer=Integer.parseInt(priceForCustomer.getText());
+				if (checkStore < 0 || checkCustomer<0) {
+					Alert msg = new Alert(AlertType.ERROR);
+					msg.setContentText("Price can't be negative");
+					msg.setTitle("Not Valid");
+					msg.show();
+					return false;
+				}
+			} catch (NumberFormatException e) {
+				return true;
+			}
+		}
 		return true;
 	}
 	

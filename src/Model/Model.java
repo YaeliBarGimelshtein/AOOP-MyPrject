@@ -136,7 +136,7 @@ public class Model {
 			this.allProducts=new TreeMap<>(new Comparator<String>() {
 				@Override
 				public int compare(String o1, String o2) { 
-					return 1;
+					return (o1.equals(o2))? 0:1;
 				}
 			});
 			break;
@@ -160,10 +160,8 @@ public class Model {
 		if(priceForStore<0) 
 			priceForStore=0;
 		
-		Customer boughtBy= new Customer(Cname, CphoneNumber, intrestedInSales);
-		Product p= new Product(name, priceForStore, priceForCustomer, boughtBy);
 		lastStatus.save(this.save());
-		allProducts.put(catalogNumber, p);
+		allProducts.put(catalogNumber, new Product(name, priceForStore, priceForCustomer, new Customer(Cname, CphoneNumber, intrestedInSales)));
 		writeAllProductsToFile();
 	}
 
