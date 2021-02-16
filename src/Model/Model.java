@@ -17,10 +17,10 @@ import Model.Memento.CareTaker;
 import Model.Memento.ModelMemento;
 
 public class Model {
-	public static final String F_NAME = "products.txt";
 	//for singelton
 	private static Model model;
 	//for file
+	public static final String F_NAME = "products.txt";
 	private boolean readFromFile;
 	private File productsFile;
 	private RandomAccessFile raf;
@@ -30,7 +30,7 @@ public class Model {
 	private ArrayList<String> allReceivingClients;
 	private String savingMethod;
 	
-	//model is a singelton
+	//singelton
 	public static Model getModel() {
 		if(model==null) {
 			model=new Model();
@@ -49,6 +49,8 @@ public class Model {
 		}
 	}
 	
+	
+	//Memento
 	public ModelMemento save() {
 		TreeMap<String, Product> copy= new TreeMap<>();
 		copy.putAll(this.allProducts);
@@ -59,23 +61,31 @@ public class Model {
 		if(lastModel==null|| lastModel.getAllProducts().size()==0) {
 			if(readFromFile)
 				return false;
+			if(checkIfAreProducts()==false)
+				return false;
 			deleteAll(null);
 			updateSavingMethod(this.savingMethod);
 		}else {
 			deleteAll(null);
 			this.allProducts=lastModel.getAllProducts();
 		}
-		//rewriting to file
 		writeAllProductsToFile();
 		return true;
 	}
 	
-	// Notify
+	//Observer
 	public void sendSMS() {
 		Set<Map.Entry<String, Product>> productSet = allProducts.entrySet();
 		for (Map.Entry<String, Product> entry : productSet) {
+				if(entry.getValue().getBoughtBy().isIntrestedInSales()==true)
 				this.allReceivingClients.add(entry.getValue().getBoughtBy().getSMS());
 			}
+	}
+	
+	public boolean checkIfAreCustomersIntrested() {
+		if(this.allReceivingClients.size()==0)
+			return false;
+		return true;
 	}
 	
 	public boolean readInforamtionFromFile() {
@@ -90,12 +100,11 @@ public class Model {
 			return true;
 			}
 		} catch (Exception e) {
-			
+			return false;
 		}
 		return false;
 	}
 	
-
 	public boolean getReadFromFile() {
 		return this.readFromFile;
 	}
@@ -139,7 +148,7 @@ public class Model {
 			raf.writeUTF(orderToSaveProducts);
 			this.positionAfterSavingMethod=raf.getFilePointer();
 		} catch (IOException e) {
-			
+			e.printStackTrace();
 		}
 	}
 
@@ -168,7 +177,7 @@ public class Model {
 			}
 			this.raf.setLength(this.raf.getFilePointer());
 		} catch (IOException e) {
-			
+			e.printStackTrace();
 		}
 	}
 		
@@ -202,7 +211,7 @@ public class Model {
 		int totalProfit=0;
 		Set<Map.Entry<String, Product>> productSet = allProducts.entrySet();
 		for (Map.Entry<String, Product> entry : productSet) {
-				all+="Product "+i+" :";
+				all+="Product "+i+"- "+entry.getValue().getName()+" :";
 				all+=entry.getValue().getProfit()+"₪\n";
 				totalProfit+=entry.getValue().getProfit();
 				i++;
@@ -233,7 +242,7 @@ public class Model {
 		try {
 			this.raf.close();
 		} catch (IOException e) {
-			
+			e.printStackTrace();
 		}
 	}
 	
@@ -271,7 +280,7 @@ public class Model {
 				positionAfterSavingMethod=raf.getFilePointer();
 				this.beforeCurPosition=0;
 			} catch (IOException e) {
-				
+				e.printStackTrace();
 			}
 		}
 
@@ -282,9 +291,8 @@ public class Model {
 					return true;
 				return false;
 			} catch (IOException e) {
-			
+				return false;
 			}
-			return false;
 		}
 
 		@Override
@@ -298,11 +306,10 @@ public class Model {
 				Entry<String, Product> next=new AbstractMap.SimpleEntry<String, Product>(raf.readUTF(), new Product(raf));
 				return next;
 			} catch (IOException e) {
-				
+				return null;
 			} catch (Exception e) {
-				
+				return null;
 			}
-			return null;
 		}
 
 		@Override
@@ -319,9 +326,9 @@ public class Model {
 					raf.seek(beforeCurPosition);
 				}
 			} catch (FileNotFoundException e) {
-				
+				e.printStackTrace();
 			} catch (IOException e) {
-				
+				e.printStackTrace();
 			}
 		}	
 	}

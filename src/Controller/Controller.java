@@ -86,7 +86,7 @@ public class Controller {
 		
 		
 		
-		//search product window
+		//search product window (for finding product and showing OR for finding product and deleting)
 		EventHandler<ActionEvent> doneInSearchProductIsPressed= new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
@@ -196,12 +196,8 @@ public class Controller {
 		EventHandler<ActionEvent> undoLastAddedProductIsPressed= new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				//if(commands.checkIfAreProducts()==true) {
 					boolean finish=commands.undo();
 					view.updateWindowToUndo(finish);
-				//}else {
-				//	view.updateWindowToUnAbleUndo();
-				//}
 			}
 		};
 		view.addEventHandlerToUndoLastAddedProduct(undoLastAddedProductIsPressed);
@@ -263,12 +259,11 @@ public class Controller {
 			@Override
 			public void handle(ActionEvent event) {
 				if(commands.checkIfAreProducts()==true) {
-					commands.sendSMS();
-					view.updateWindowToSendSMS();
+					boolean areCustomers=commands.sendSMS();
+					view.updateWindowToSendSMS(areCustomers);
 				}else {
 					view.updateWindowToUnableSendSMS();
 				}
-				
 			}
 		};
 		view.addEventHandlerToSendSMS(sendSMSIsPressed);
@@ -284,12 +279,8 @@ public class Controller {
 		EventHandler<ActionEvent> showAllConfirmedCustomers= new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				if(commands.checkIfAreProducts()==true) {
-					view.createWindowToAllConfirmedCustomers(commands.getAllConfirmedCustomers());
-					commands.resetAllConfirmedCustomers();
-				}else {
-					view.createWindowToUnableAllConfirmedCustomers();
-				}
+				view.createWindowToAllConfirmedCustomers(commands.getAllConfirmedCustomers());
+				commands.resetAllConfirmedCustomers();
 			}
 		};
 		view.addEventHandlerToshowAllConfirmedCustomers(showAllConfirmedCustomers);

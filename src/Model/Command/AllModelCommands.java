@@ -100,8 +100,9 @@ public class AllModelCommands implements ModelCommands{
 	}
 
 	@Override
-	public void sendSMS() {
+	public boolean sendSMS() {
 		this.sentSMS.sendSMS();
+		return this.sentSMS.checkIfAreCustomersIntrested();
 	}
 
 	@Override

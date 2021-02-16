@@ -163,7 +163,7 @@ public class addProdectView {
 	public boolean checkAddProductDone() {
 		if(catalogNumber.getText().isEmpty() ||customerName.getText().isEmpty() || phoneNumber.getText().isEmpty()) {
 			Alert msg = new Alert(AlertType.ERROR);
-			msg.setContentText("Must add all values");
+			msg.setContentText("Must add: Catalog Number, Customer Name, Phone Number");
 			msg.setTitle("Not Valid");
 			msg.show();
 			return false;
@@ -230,5 +230,4 @@ public class addProdectView {
 		this.intrestedInSalesYes.setSelected(true);
 		this.stage.close();
 	}
-
 }

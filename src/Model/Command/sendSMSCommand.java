@@ -12,4 +12,8 @@ public class sendSMSCommand {
 	public void sendSMS() {
 		this.model.sendSMS();
 	}
+
+	public boolean checkIfAreCustomersIntrested() {
+		return this.model.checkIfAreCustomersIntrested();
+	}
 }

@@ -6,9 +6,9 @@ import java.io.RandomAccessFile;
 import Model.Observer.Observer;
 
 public class Customer implements Observer {
-	String name;
-	String phoneNumber;
-	boolean intrestedInSales;
+	private String name;
+	private String phoneNumber;
+	private boolean intrestedInSales;
 	
 	public Customer(String name, String phoneNumber, boolean intrestedInSales) {
 		this.name = name;

@@ -11,7 +11,7 @@ public interface ModelCommands {
 	String getAllProducts();
 	String getAllPrfits();
 	boolean undo();
-	void sendSMS();
+	boolean sendSMS();
 	ArrayList<String> getAllConfirmedCustomers();
 	boolean checkIfAreProducts();
 	void deleteProduct(String catalogNumber);

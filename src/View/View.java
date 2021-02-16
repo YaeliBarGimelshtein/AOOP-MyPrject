@@ -210,7 +210,7 @@ public class View {
 	}
 	
 	public void createUnAbleToSearchProductView() {
-		this.error.setText("Unable to search Product");
+		this.error.setText("No Products to search ");
 	}
 	
 	public void createShowProductView(String pName, String pPriceForStore, String pPriceForCustomer, String cName, String cPhoneNumber,
@@ -247,10 +247,6 @@ public class View {
 		this.allCustomersWithSMS.showAllCustomers();
 		this.error.setText("");
 		}
-	}
-	
-	public void createWindowToUnableAllConfirmedCustomers() {
-		this.error.setText("Unable to show all Customers");
 	}
 	
 	public boolean checkAddProductDone() { //to add product	
@@ -314,7 +310,6 @@ public class View {
 		}
 		this.stage.show();
 	}
-	
 
 	public void updateWindowToReadFromFile() {
 		this.undoLastAddedProduct.setDisable(true);
@@ -322,14 +317,10 @@ public class View {
 	
 	public void updateWindowToUndo(boolean finish) {
 		if(finish)
-			this.error.setText("Undid Last Product");
+			this.error.setText("Undid Last Operation");
 		else {
 			this.error.setText("No more Undo Possible");
 		}
-	}
-	
-	public void updateWindowToUnAbleUndo() {
-		this.error.setText("Unable to undo last Product");
 	}
 	
 	public void updateWindowToDeleteProductFromFile() {
@@ -342,7 +333,7 @@ public class View {
 	
 	public void updateWindowToUnAbleToDeleteProductFromFile() {
 		this.searchProductByCatalogNumberView.closeWindow();
-		this.error.setText("Unable to Delete Product");
+		this.error.setText("No Product to Delete");
 		this.stage.show();
 	}
 
@@ -353,17 +344,22 @@ public class View {
 	}
 	
 	public void updateWindowToUnableDeleteAllProductFromFile() {
-		this.error.setText("Unable to Delete All Products ");
+		this.error.setText("No Products to Delete");
 	}
 
 	
-	public void updateWindowToSendSMS() {
-		this.showAllConfirmedCustomers.setDisable(false);
-		this.error.setText("SMS Sent");
+	public void updateWindowToSendSMS(boolean areCustomers) {
+		if(areCustomers) {
+			this.showAllConfirmedCustomers.setDisable(false);
+			this.error.setText("SMS Sent");
+		}else {
+			this.showAllConfirmedCustomers.setDisable(true);
+			this.error.setText("No intrested Customers in SMS in the system");
+		}
 	}
 	
 	public void updateWindowToUnableSendSMS() {
-		this.error.setText("Unable to Send SMS");
+		this.error.setText("Unable to Send SMS, no Customers");
 	}
 	
 	public void closeShowAllConfirmedCustomersWindow() {
