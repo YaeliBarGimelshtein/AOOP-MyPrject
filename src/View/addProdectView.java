@@ -180,6 +180,13 @@ public class addProdectView {
 					msg.show();
 					return false;
 				}
+				if(checkStore>checkCustomer) {
+					Alert msg = new Alert(AlertType.ERROR);
+					msg.setContentText("Price for customer can't be lower than price for store");
+					msg.setTitle("Not Valid");
+					msg.show();
+					return false;
+				}
 			} catch (NumberFormatException e) {
 				return true;
 			}
